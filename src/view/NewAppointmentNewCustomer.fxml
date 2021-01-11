@@ -4,32 +4,27 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.NewAppointmentNewCustomerController">
+<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewAppointmentNewCustomerController">
     <children>
-      <TitledPane animated="false" prefHeight="435.0" prefWidth="300.0" text="New Appointment - New Customer">
-         <content>
-          <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
-               <children>
-                  <Button layoutX="17.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Save" />
-                  <Button layoutX="198.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Exit" />
-                  <Button layoutX="103.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Cancel" />
-                  <ComboBox layoutX="24.0" layoutY="9.0" prefHeight="25.0" prefWidth="222.0" promptText="Appointment Type" />
-                  <DatePicker layoutX="23.0" layoutY="40.0" prefHeight="25.0" prefWidth="222.0" promptText="Date" />
-                  <TextField layoutX="23.0" layoutY="104.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
-                  <TextField layoutX="23.0" layoutY="134.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
-                  <TextField layoutX="23.0" layoutY="164.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
-                  <TextField layoutX="24.0" layoutY="194.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
-                  <TextField layoutX="24.0" layoutY="224.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
-                  <TextField layoutX="24.0" layoutY="254.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
-                  <TextField layoutX="23.0" layoutY="284.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
-                  <TextField layoutX="23.0" layoutY="314.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
-                  <TextField layoutX="23.0" layoutY="72.0" prefHeight="25.0" prefWidth="222.0" promptText="Time" />
-               </children>
-            </AnchorPane>
-         </content>
-      </TitledPane>
+    <AnchorPane layoutX="1.0" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
+         <children>
+            <ComboBox fx:id="ComboBoxAppointmentType" layoutX="24.0" layoutY="29.0" onAction="#onComboBoxAppointmentType" prefHeight="25.0" prefWidth="222.0" promptText="Appointment Type" />
+            <DatePicker fx:id="DatePickerNewAppointment" layoutX="23.0" layoutY="60.0" onAction="#onDatePickerNewAppointment" prefHeight="25.0" prefWidth="222.0" promptText="Date" />
+            <TextField fx:id="TextFieldTime" layoutX="23.0" layoutY="92.0" prefHeight="25.0" prefWidth="222.0" promptText="Time" />
+            <TextField fx:id="TextFieldFirstName" layoutX="23.0" layoutY="124.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
+            <TextField fx:id="TextFieldLastName" layoutX="23.0" layoutY="154.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
+            <TextField fx:id="TextFieldPhone" layoutX="23.0" layoutY="184.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
+            <TextField fx:id="TextFieldStreetAddress" layoutX="24.0" layoutY="214.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
+            <TextField fx:id="TextFieldAptSte" layoutX="24.0" layoutY="244.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
+            <TextField fx:id="TextFieldCity" layoutX="24.0" layoutY="274.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
+            <TextField fx:id="TextFieldState" layoutX="23.0" layoutY="304.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
+            <TextField fx:id="TextFieldCountry" layoutX="23.0" layoutY="334.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="ButtonSave" layoutX="32.0" layoutY="379.0" mnemonicParsing="false" onAction="#onButtonSave" text="Save" />
+      <Button fx:id="ButtonCancel" layoutX="117.0" layoutY="379.0" mnemonicParsing="false" onAction="#onButtonCancel" text="Cancel" />
+      <Button fx:id="ButtonExit" layoutX="214.0" layoutY="379.0" mnemonicParsing="false" onAction="#onButtonExit" text="Exit" />
    </children>
 </AnchorPane>
