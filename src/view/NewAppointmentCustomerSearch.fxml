@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.NewAppointmentCustomerSearchController">
+    <children>
+      <TitledPane animated="false" prefHeight="400.0" prefWidth="600.0" text="New Appointment - Customer Search">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button layoutX="339.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Select" />
+                  <Button layoutX="448.0" layoutY="318.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Cancel" />
+                  <TextField layoutX="65.0" layoutY="65.0" prefHeight="25.0" prefWidth="256.0" promptText="Name" />
+                  <TextArea layoutX="65.0" layoutY="145.0" prefHeight="142.0" prefWidth="464.0" />
+                  <Label layoutX="78.0" layoutY="292.0" opacity="0.78" prefHeight="17.0" prefWidth="71.0" text="x results" />
+                  <Button layoutX="406.0" layoutY="65.0" mnemonicParsing="false" text="Search" />
+                  <ComboBox layoutX="65.0" layoutY="29.0" prefHeight="25.0" prefWidth="257.0" promptText="Search by ..." />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

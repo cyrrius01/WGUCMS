@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" maxHeight="394.0" maxWidth="600.0" minHeight="394.0" minWidth="600.0" prefHeight="394.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
+   <children>
+    <AnchorPane layoutX="1.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="600.0">
+         <children>
+            <Hyperlink fx:id="MonthHyperlink" layoutX="483.0" layoutY="247.0" onAction="#OnMonthHyperlink" text="Month" />
+            <Hyperlink fx:id="WeekHyperlink" layoutX="533.0" layoutY="247.0" onAction="#OnWeekHyperlink" text="Week" />
+            <Hyperlink fx:id="AllHyperlink" layoutX="449.0" layoutY="248.0" onAction="#OnAllHyperlink" text="All" />
+            <Separator layoutX="477.0" layoutY="249.0" orientation="VERTICAL" prefHeight="19.0" prefWidth="6.0" />
+            <Separator layoutX="527.0" layoutY="249.0" orientation="VERTICAL" prefHeight="19.0" prefWidth="6.0" />
+            <Button fx:id="NewAppointmentButton" layoutX="39.0" layoutY="318.0" mnemonicParsing="false" onAction="#onNewAppointmentClick" text="New Appointment" />
+            <Button fx:id="ManageCustomerButton" layoutX="196.0" layoutY="318.0" mnemonicParsing="false" onAction="#onManageCustomerClick" text="Manage Customer" />
+            <Button fx:id="ReportsButton" layoutX="352.0" layoutY="318.0" mnemonicParsing="false" onAction="#OnReportsClick" text="Reports" />
+            <Button fx:id="ExitButton" layoutX="455.0" layoutY="318.0" mnemonicParsing="false" onAction="#OnExitClick" text="Exit" />
+            <TableView fx:id="MainScreenTableView" layoutX="-1.0" maxHeight="243.0" maxWidth="600.0" minHeight="243.0" minWidth="600.0" prefHeight="243.0" prefWidth="600.0">
+              <columns>
+                <TableColumn fx:id="DateTableColumn" prefWidth="115.1999785900116" text="Date" />
+                <TableColumn fx:id="TimeTableColumn" prefWidth="111.20001220703125" text="Time" />
+                  <TableColumn fx:id="CustomerTableColumn" minWidth="0.0" prefWidth="374.40001525878904" text="Customer" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

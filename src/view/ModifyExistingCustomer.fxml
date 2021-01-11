@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="291.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.ModifyExistingCustomerController">
+    <children>
+      <TitledPane animated="false" prefHeight="435.0" prefWidth="300.0" text="Modify Existing Customer">
+         <content>
+          <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
+               <children>
+                  <Button layoutX="198.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Cancel" />
+                  <Button layoutX="103.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Save" />
+                  <TextField layoutX="23.0" layoutY="60.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
+                  <TextField layoutX="23.0" layoutY="90.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
+                  <TextField layoutX="23.0" layoutY="120.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
+                  <TextField layoutX="24.0" layoutY="150.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
+                  <TextField layoutX="24.0" layoutY="180.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
+                  <TextField layoutX="24.0" layoutY="210.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
+                  <TextField layoutX="23.0" layoutY="240.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
+                  <TextField layoutX="23.0" layoutY="270.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
+                  <TextField editable="false" layoutX="24.0" layoutY="30.0" prefHeight="25.0" prefWidth="222.0" promptText="Customer ID" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+   </children>
+</AnchorPane>

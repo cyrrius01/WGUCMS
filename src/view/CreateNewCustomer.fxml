@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="295.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.CreateNewCustomerController">
+    <children>
+      <TitledPane animated="false" prefHeight="435.0" prefWidth="300.0" text="New Customer">
+         <content>
+          <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
+               <children>
+                  <Button layoutX="17.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Save" />
+                  <Button layoutX="198.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Exit" />
+                  <Button layoutX="103.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" text="Cancel" />
+                  <TextField layoutX="23.0" layoutY="27.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
+                  <TextField layoutX="23.0" layoutY="57.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
+                  <TextField layoutX="23.0" layoutY="87.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
+                  <TextField layoutX="24.0" layoutY="117.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
+                  <TextField layoutX="24.0" layoutY="147.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
+                  <TextField layoutX="24.0" layoutY="177.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
+                  <TextField layoutX="23.0" layoutY="207.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
+                  <TextField layoutX="23.0" layoutY="237.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
+               </children>
+            </AnchorPane>
+         </content>
+      </TitledPane>
+   </children>
+</AnchorPane>
