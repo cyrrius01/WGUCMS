@@ -32,6 +32,9 @@ public class NewOrExistingBoxController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
         NewOrExistingTextArea.setText(languageRB.getString("NewOrExistingCustomer"));
+        NewButton.setText(languageRB.getString("New"));
+        ExistingButton.setText(languageRB.getString("Existing"));
+        CancelButton.setText(languageRB.getString("Cancel"));
     }    
 
     @FXML
