@@ -6,6 +6,7 @@
 package controller;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,8 +27,6 @@ public class NewAppointmentNewCustomerController implements Initializable {
     private ComboBox<?> ComboBoxAppointmentType;
     @FXML
     private DatePicker DatePickerNewAppointment;
-    @FXML
-    private TextField TextFieldTime;
     @FXML
     private TextField TextFieldFirstName;
     @FXML
@@ -50,13 +49,29 @@ public class NewAppointmentNewCustomerController implements Initializable {
     private Button ButtonCancel;
     @FXML
     private Button ButtonExit;
+    @FXML
+    private ComboBox<?> ComboBoxTime;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+        ComboBoxAppointmentType.setPromptText(languageRB.getString("AppointmentType"));
+        DatePickerNewAppointment.setPromptText(languageRB.getString("Date"));
+        ComboBoxTime.setPromptText(languageRB.getString("Time"));
+        TextFieldFirstName.setPromptText(languageRB.getString("FirstName"));
+        TextFieldLastName.setPromptText(languageRB.getString("LastName"));
+        TextFieldPhone.setPromptText(languageRB.getString("Phone"));
+        TextFieldStreetAddress.setPromptText(languageRB.getString("StreetAddress"));
+        TextFieldAptSte.setPromptText(languageRB.getString("AptSte"));
+        TextFieldCity.setPromptText(languageRB.getString("City"));
+        TextFieldState.setPromptText(languageRB.getString("State"));
+        TextFieldCountry.setPromptText(languageRB.getString("Country"));
+        ButtonSave.setText(languageRB.getString("Save"));
+        ButtonCancel.setText(languageRB.getString("Cancel"));
+        ButtonExit.setText(languageRB.getString("Exit"));
     }    
 
     @FXML
@@ -73,6 +88,14 @@ public class NewAppointmentNewCustomerController implements Initializable {
 
     @FXML
     private void onButtonExit(ActionEvent event) {
+    }
+
+    @FXML
+    private void onDatePickerNewAppointment(ActionEvent event) {
+    }
+
+    @FXML
+    private void onComboBoxTime(ActionEvent event) {
     }
     
 }

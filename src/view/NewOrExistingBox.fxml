@@ -7,7 +7,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="141.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewOrExistingBoxController">
    <children>
-      <TextArea fx:id="NewOrExistingTextArea" layoutY="15.0" prefHeight="65.0" prefWidth="472.0" text="Are you creating this appointment for a new or existing customer?">
+      <TextArea fx:id="NewOrExistingTextArea" editable="false" layoutY="15.0" prefHeight="65.0" prefWidth="472.0" text="Are you creating this appointment for a new or existing customer?">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>

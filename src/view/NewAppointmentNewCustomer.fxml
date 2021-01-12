@@ -12,7 +12,7 @@
          <children>
             <ComboBox fx:id="ComboBoxAppointmentType" layoutX="24.0" layoutY="29.0" onAction="#onComboBoxAppointmentType" prefHeight="25.0" prefWidth="222.0" promptText="Appointment Type" />
             <DatePicker fx:id="DatePickerNewAppointment" layoutX="23.0" layoutY="60.0" onAction="#onDatePickerNewAppointment" prefHeight="25.0" prefWidth="222.0" promptText="Date" />
-            <TextField fx:id="TextFieldTime" layoutX="23.0" layoutY="92.0" prefHeight="25.0" prefWidth="222.0" promptText="Time" />
+            <ComboBox fx:id="ComboBoxTime" layoutX="24.0" layoutY="92.0" onAction="#onComboBoxTime" prefHeight="25.0" prefWidth="222.0" promptText="Time" />
             <TextField fx:id="TextFieldFirstName" layoutX="23.0" layoutY="124.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
             <TextField fx:id="TextFieldLastName" layoutX="23.0" layoutY="154.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
             <TextField fx:id="TextFieldPhone" layoutX="23.0" layoutY="184.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
