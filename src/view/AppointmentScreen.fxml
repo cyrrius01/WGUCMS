@@ -6,9 +6,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewAppointmentNewCustomerController">
-    <children>
-    <AnchorPane layoutX="1.0" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
+<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentController">
+   <children>
+      <AnchorPane layoutX="1.0" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
          <children>
             <ComboBox fx:id="ComboBoxAppointmentType" layoutX="24.0" layoutY="29.0" onAction="#onComboBoxAppointmentType" prefHeight="25.0" prefWidth="222.0" promptText="Appointment Type" />
             <DatePicker fx:id="DatePickerNewAppointment" layoutX="23.0" layoutY="60.0" onAction="#onDatePickerNewAppointment" prefHeight="25.0" prefWidth="222.0" promptText="Date" />

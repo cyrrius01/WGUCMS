@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,8 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -27,7 +22,7 @@ import javafx.stage.Stage;
  *
  * @author Keith A Graham
  */
-public class NewAppointmentCustomerSearchController implements Initializable {
+public class CustomerSearchController implements Initializable {
 
     @FXML
     private Button ButtonSelect;
@@ -36,41 +31,37 @@ public class NewAppointmentCustomerSearchController implements Initializable {
     @FXML
     private TextField TextFieldSearch;
     @FXML
-    private Button ButtonSearch;
-    @FXML
-    private ComboBox<?> ComboBoxSearch;
-    @FXML
-    private TableView<?> TableViewResults;
-    @FXML
-    private TableColumn<?, ?> TableColumnFirstName;
-    @FXML
-    private TableColumn<?, ?> TableColumnLastName;
-    @FXML
-    private TableColumn<?, ?> TableColumnPhone;
+    private TextArea TextAreaResults;
     @FXML
     private Label LabelResults;
+    @FXML
+    private Button ButtonSearch;
+    @FXML
+    private ComboBox ComboBoxSearch;
+    @FXML
+    private Button ButtonNew;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ComboBoxSearch.getItems().addAll("Name", "Phone Number");
+
+        
+        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+        ButtonSelect.setText(languageRB.getString("Select"));
+        ButtonCancel.setText(languageRB.getString("Cancel"));
+        TextFieldSearch.setPromptText(languageRB.getString("SearchText"));
+        LabelResults.setText(languageRB.getString("Results"));
+        ButtonSearch.setText(languageRB.getString("SearchButton"));
+        ComboBoxSearch.setPromptText(languageRB.getString("SearchBy"));
+        ButtonNew.setText(languageRB.getString("New"));
+        
     }    
 
     @FXML
-    private void onButtonSelect(ActionEvent event) throws IOException {
-        
-        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/view/NewAppointmentExistingCustomer.fxml"));
-
-        Stage newStage = new Stage();
-        newStage.setTitle(null);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.show();
-        
+    private void onButtonSelect(ActionEvent event) {
     }
 
     @FXML
@@ -94,6 +85,14 @@ public class NewAppointmentCustomerSearchController implements Initializable {
 
     @FXML
     private void onComboBoxSearch(ActionEvent event) {
+        
+        String promptText = ComboBoxSearch.getValue().toString();
+        TextFieldSearch.setPromptText(promptText);
+        
+    }
+
+    @FXML
+    private void onButtonNew(ActionEvent event) {
     }
     
 }

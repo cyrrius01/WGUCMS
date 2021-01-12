@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="299.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ExistingCustomerController">
+<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="299.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerController">
     <children>
     <AnchorPane layoutX="0.800000011920929" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
          <children>
@@ -17,7 +17,7 @@
             <TextField fx:id="TextFieldCity" editable="false" layoutX="24.0" layoutY="210.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
             <TextField fx:id="TextFieldPostalCode" editable="false" layoutX="23.0" layoutY="240.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
             <TextField fx:id="TextFieldCountry" editable="false" layoutX="23.0" layoutY="270.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
-            <Button fx:id="ButtonModify" layoutX="17.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonModify" prefHeight="25.0" prefWidth="67.0" text="Modify" />
+            <Button fx:id="ButtonSave" layoutX="17.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonSave" prefHeight="25.0" prefWidth="67.0" text="Save" />
             <Button fx:id="ButtonCancel" layoutX="103.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonCancel" prefHeight="25.0" prefWidth="74.0" text="Cancel" />
             <Button fx:id="ButtonDelete" layoutX="198.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonDelete" prefHeight="25.0" prefWidth="80.0" text="Delete" />
          </children>

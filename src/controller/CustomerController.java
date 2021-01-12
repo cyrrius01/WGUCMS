@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
  *
  * @author Keith A Graham
  */
-public class ExistingCustomerController implements Initializable {
+public class CustomerController implements Initializable {
 
     @FXML
     private TextField TextFieldCustomerId;
@@ -35,11 +35,11 @@ public class ExistingCustomerController implements Initializable {
     @FXML
     private TextField TextFieldCity;
     @FXML
-    private TextField TextFieldState;
+    private TextField TextFieldPostalCode;
     @FXML
     private TextField TextFieldCountry;
     @FXML
-    private Button ButtonModify;
+    private Button ButtonSave;
     @FXML
     private Button ButtonCancel;
     @FXML
@@ -54,7 +54,7 @@ public class ExistingCustomerController implements Initializable {
     }    
 
     @FXML
-    private void onButtonModify(ActionEvent event) {
+    private void onButtonSave(ActionEvent event) {
     }
 
     @FXML

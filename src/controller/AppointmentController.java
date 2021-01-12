@@ -5,32 +5,27 @@
  */
 package controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
  *
  * @author Keith A Graham
  */
-public class NewAppointmentExistingCustomerController implements Initializable {
+public class AppointmentController implements Initializable {
 
     @FXML
     private ComboBox<?> ComboBoxAppointmentType;
     @FXML
-    private DatePicker DatePickerDate;
+    private DatePicker DatePickerNewAppointment;
     @FXML
     private ComboBox<?> ComboBoxTime;
     @FXML
@@ -69,7 +64,7 @@ public class NewAppointmentExistingCustomerController implements Initializable {
     }
 
     @FXML
-    private void onDatePickerDate(ActionEvent event) {
+    private void onDatePickerNewAppointment(ActionEvent event) {
     }
 
     @FXML
@@ -81,29 +76,11 @@ public class NewAppointmentExistingCustomerController implements Initializable {
     }
 
     @FXML
-    private void onButtonCancel(ActionEvent event) throws IOException {
-        
-        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
-
-        Stage newStage = new Stage();
-        newStage.setTitle(null);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.show();
-        
+    private void onButtonCancel(ActionEvent event) {
     }
 
     @FXML
     private void onButtonExit(ActionEvent event) {
-        
-        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-        
-        System.out.println("Main Exit Clicked");
-        System.exit(0);
-        
     }
     
 }
