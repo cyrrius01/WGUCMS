@@ -49,15 +49,15 @@ public class ManageCustomerController implements Initializable {
         ComboBoxSearch.getItems().addAll("Name", "Phone Number");
 
         
-        /**ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
         ButtonSelect.setText(languageRB.getString("Select"));
         ButtonCancel.setText(languageRB.getString("Cancel"));
-        TextFieldSearch.setText(languageRB.getString("SearchText"));
+        TextFieldSearch.setPromptText(languageRB.getString("SearchText"));
         LabelResults.setText(languageRB.getString("Results"));
         ButtonSearch.setText(languageRB.getString("SearchButton"));
-        //ComboBoxSearch.setText(languageRB.getString("SearchBy"));
+        ComboBoxSearch.setPromptText(languageRB.getString("SearchBy"));
         ButtonNew.setText(languageRB.getString("New"));
-        * */
+        
     }    
 
     @FXML
