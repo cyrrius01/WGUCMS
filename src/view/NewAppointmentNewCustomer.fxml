@@ -19,7 +19,7 @@
             <TextField fx:id="TextFieldStreetAddress" layoutX="24.0" layoutY="214.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
             <TextField fx:id="TextFieldAptSte" layoutX="24.0" layoutY="244.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
             <TextField fx:id="TextFieldCity" layoutX="24.0" layoutY="274.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
-            <TextField fx:id="TextFieldState" layoutX="23.0" layoutY="304.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
+            <TextField fx:id="TextFieldPostalCode" layoutX="23.0" layoutY="304.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
             <TextField fx:id="TextFieldCountry" layoutX="23.0" layoutY="334.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
          </children>
       </AnchorPane>

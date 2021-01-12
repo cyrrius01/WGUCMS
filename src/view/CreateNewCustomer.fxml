@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="295.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controller.CreateNewCustomerController">
+<AnchorPane id="AnchorPane" prefHeight="435.0" prefWidth="295.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CreateNewCustomerController">
     <children>
       <TitledPane animated="false" prefHeight="435.0" prefWidth="300.0" text="New Customer">
          <content>
@@ -20,7 +20,7 @@
                   <TextField layoutX="24.0" layoutY="117.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
                   <TextField layoutX="24.0" layoutY="147.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
                   <TextField layoutX="24.0" layoutY="177.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
-                  <TextField layoutX="23.0" layoutY="207.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
+                  <TextField fx:id="TextFieldPostalCode" layoutX="23.0" layoutY="207.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
                   <TextField layoutX="23.0" layoutY="237.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
                </children>
             </AnchorPane>

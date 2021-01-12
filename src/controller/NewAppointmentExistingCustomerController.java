@@ -46,7 +46,7 @@ public class NewAppointmentExistingCustomerController implements Initializable {
     @FXML
     private TextField TextFieldCity;
     @FXML
-    private TextField TextFieldState;
+    private TextField TextFieldPostalCode;
     @FXML
     private TextField TextFieldCountry;
     @FXML

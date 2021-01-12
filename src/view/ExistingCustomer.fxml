@@ -15,7 +15,7 @@
             <TextField fx:id="TextFieldStreetAddress" editable="false" layoutX="24.0" layoutY="150.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
             <TextField fx:id="TextFieldAptSte" editable="false" layoutX="24.0" layoutY="180.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
             <TextField fx:id="TextFieldCity" editable="false" layoutX="24.0" layoutY="210.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
-            <TextField fx:id="TextFieldState" editable="false" layoutX="23.0" layoutY="240.0" prefHeight="25.0" prefWidth="222.0" promptText="State" />
+            <TextField fx:id="TextFieldPostalCode" editable="false" layoutX="23.0" layoutY="240.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
             <TextField fx:id="TextFieldCountry" editable="false" layoutX="23.0" layoutY="270.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
             <Button fx:id="ButtonModify" layoutX="17.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonModify" prefHeight="25.0" prefWidth="67.0" text="Modify" />
             <Button fx:id="ButtonCancel" layoutX="103.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonCancel" prefHeight="25.0" prefWidth="74.0" text="Cancel" />
