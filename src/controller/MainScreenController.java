@@ -112,7 +112,7 @@ public class MainScreenController implements Initializable {
         
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/ManageCustomer.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/CustomerSearch.fxml"));
 
         Stage newStage = new Stage();
         newStage.setTitle(null);

@@ -69,7 +69,23 @@ public class CustomerSearchController implements Initializable {
     }    
 
     @FXML
-    private void onButtonSelect(ActionEvent event) {
+    private void onButtonSelect(ActionEvent event) throws IOException {
+        
+        /*  first need to assemble an array object from selected customer, then get ready 
+            to pass the object over to the Customer screen
+        
+        */
+        
+        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
+
+        Stage newStage = new Stage();
+        newStage.setTitle(null);
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        newStage.show();
+        
     }
 
     @FXML
