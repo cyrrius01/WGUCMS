@@ -33,8 +33,6 @@ public class CustomerSearchController implements Initializable {
     @FXML
     private TextField TextFieldSearch;
     @FXML
-    private Label LabelResults;
-    @FXML
     private Button ButtonSearch;
     @FXML
     private ComboBox ComboBoxSearch;
@@ -56,14 +54,14 @@ public class CustomerSearchController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ComboBoxSearch.getItems().addAll("Name", "Phone Number");
+        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
 
         
-        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+        ComboBoxSearch.getItems().addAll(languageRB.getString("Name"), languageRB.getString("Phone"));
         ButtonSelect.setText(languageRB.getString("Select"));
         ButtonCancel.setText(languageRB.getString("Cancel"));
-        if(TextFieldSearch.getPromptText().equals("Name")){
-            TextFieldSearch.setPromptText(languageRB.getString("Name"));
+        if(ComboBoxSearch.getPromptText().equals("Name")){
+            ComboBoxSearch.setPromptText(languageRB.getString("Name"));
         } else if(TextFieldSearch.getPromptText().equals("Phone")) {
             TextFieldSearch.setPromptText(languageRB.getString("Phone"));
         }
@@ -99,8 +97,7 @@ public class CustomerSearchController implements Initializable {
     @FXML
     private void onComboBoxSearch(ActionEvent event) {
         
-        String promptText = ComboBoxSearch.getValue().toString();
-        TextFieldSearch.setPromptText(promptText);
+        
         
     }
 

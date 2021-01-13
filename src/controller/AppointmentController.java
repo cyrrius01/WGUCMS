@@ -61,13 +61,13 @@ public class AppointmentController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ComboBoxAppointmentType.getItems().addAll("Scrum", "Presentation");
     }    
 
     @FXML
     private void onComboBoxAppointmentType(ActionEvent event) {
         
-        ComboBoxAppointmentType.getItems().addAll("Scrum", "Presentation");
+        
         
     }
 
