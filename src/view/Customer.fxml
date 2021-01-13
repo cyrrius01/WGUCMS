@@ -9,14 +9,14 @@
     <AnchorPane layoutX="0.800000011920929" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="300.0">
          <children>
             <TextField fx:id="TextFieldCustomerId" editable="false" layoutX="24.0" layoutY="30.0" prefHeight="25.0" prefWidth="222.0" promptText="Customer ID" />
-            <TextField fx:id="TextFieldFirstName" editable="false" layoutX="23.0" layoutY="60.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
-            <TextField fx:id="TextFieldLastName" editable="false" layoutX="23.0" layoutY="90.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
-            <TextField fx:id="TextFieldPhone" editable="false" layoutX="23.0" layoutY="120.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
-            <TextField fx:id="TextFieldStreetAddress" editable="false" layoutX="24.0" layoutY="150.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
-            <TextField fx:id="TextFieldAptSte" editable="false" layoutX="24.0" layoutY="180.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
-            <TextField fx:id="TextFieldCity" editable="false" layoutX="24.0" layoutY="210.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
-            <TextField fx:id="TextFieldPostalCode" editable="false" layoutX="23.0" layoutY="240.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
-            <TextField fx:id="TextFieldCountry" editable="false" layoutX="23.0" layoutY="270.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
+            <TextField fx:id="TextFieldFirstName" layoutX="23.0" layoutY="60.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
+            <TextField fx:id="TextFieldLastName" layoutX="23.0" layoutY="90.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
+            <TextField fx:id="TextFieldPhone" layoutX="23.0" layoutY="120.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
+            <TextField fx:id="TextFieldStreetAddress" layoutX="24.0" layoutY="150.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
+            <TextField fx:id="TextFieldAptSte" layoutX="24.0" layoutY="180.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
+            <TextField fx:id="TextFieldCity" layoutX="24.0" layoutY="210.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
+            <TextField fx:id="TextFieldPostalCode" layoutX="23.0" layoutY="240.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
+            <TextField fx:id="TextFieldCountry" layoutX="23.0" layoutY="270.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
             <Button fx:id="ButtonSave" layoutX="17.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonSave" prefHeight="25.0" prefWidth="67.0" text="Save" />
             <Button fx:id="ButtonCancel" layoutX="103.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonCancel" prefHeight="25.0" prefWidth="74.0" text="Cancel" />
             <Button fx:id="ButtonDelete" layoutX="198.0" layoutY="361.0" mnemonicParsing="false" onAction="#onButtonDelete" prefHeight="25.0" prefWidth="80.0" text="Delete" />

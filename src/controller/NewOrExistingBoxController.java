@@ -47,7 +47,7 @@ public class NewOrExistingBoxController implements Initializable {
         
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/view/AppointmentScreen.fxml"));
 
         Stage newStage = new Stage();
         newStage.setTitle(null);

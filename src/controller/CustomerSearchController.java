@@ -13,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -31,8 +33,6 @@ public class CustomerSearchController implements Initializable {
     @FXML
     private TextField TextFieldSearch;
     @FXML
-    private TextArea TextAreaResults;
-    @FXML
     private Label LabelResults;
     @FXML
     private Button ButtonSearch;
@@ -40,6 +40,16 @@ public class CustomerSearchController implements Initializable {
     private ComboBox ComboBoxSearch;
     @FXML
     private Button ButtonNew;
+    @FXML
+    private TableView<?> TableViewCustomer;
+    @FXML
+    private TableColumn<?, ?> TableColumnFirstName;
+    @FXML
+    private TableColumn<?, ?> TableColumnLastName;
+    @FXML
+    private TableColumn<?, ?> TableColumnPhone;
+    private int intResults;
+   
 
     /**
      * Initializes the controller class.
@@ -52,9 +62,12 @@ public class CustomerSearchController implements Initializable {
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
         ButtonSelect.setText(languageRB.getString("Select"));
         ButtonCancel.setText(languageRB.getString("Cancel"));
-        TextFieldSearch.setPromptText(languageRB.getString("SearchText"));
-        LabelResults.setText(languageRB.getString("Results"));
-        ButtonSearch.setText(languageRB.getString("SearchButton"));
+        if(TextFieldSearch.getPromptText().equals("Name")){
+            TextFieldSearch.setPromptText(languageRB.getString("Name"));
+        } else if(TextFieldSearch.getPromptText().equals("Phone")) {
+            TextFieldSearch.setPromptText(languageRB.getString("Phone"));
+        }
+        ButtonSearch.setText(languageRB.getString("Search"));
         ComboBoxSearch.setPromptText(languageRB.getString("SearchBy"));
         ButtonNew.setText(languageRB.getString("New"));
         
@@ -92,7 +105,19 @@ public class CustomerSearchController implements Initializable {
     }
 
     @FXML
-    private void onButtonNew(ActionEvent event) {
+    private void onButtonNew(ActionEvent event) throws IOException {
+        
+        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
+
+        Parent root = FXMLLoader.load(getClass().getResource("/view/Customer.fxml"));
+
+        Stage newStage = new Stage();
+        newStage.setTitle(null);
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        newStage.show();
+        
+        
     }
     
 }
