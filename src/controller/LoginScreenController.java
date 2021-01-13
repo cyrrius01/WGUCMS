@@ -49,6 +49,7 @@ public class LoginScreenController implements Initializable {
     @FXML
     
     private String queryResult;
+    private int flag;
     
     
     @Override
@@ -77,6 +78,9 @@ public class LoginScreenController implements Initializable {
             blankUnamePass.setHeaderText(null);
             blankUnamePass.setContentText(languageRB.getString("no.blank"));
             blankUnamePass.showAndWait();
+            
+        }   else{
+            flag=1; // turn this flag on to prevent invalid message from triggering when blank uname or pass is entered
         }
             
             // Start DB Connection            
@@ -119,7 +123,7 @@ public class LoginScreenController implements Initializable {
                 newStage.show();
                  
 
-            } else {
+            } else if(flag==1) {
                 
                 Alert invalidUnamePass = new Alert(AlertType.INFORMATION);
                 invalidUnamePass.setHeaderText(null);

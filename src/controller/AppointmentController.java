@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 public class AppointmentController implements Initializable {
 
     @FXML
-    private ComboBox<?> ComboBoxAppointmentType;
+    private ComboBox ComboBoxAppointmentType;
     @FXML
     private DatePicker DatePickerNewAppointment;
     @FXML
@@ -66,6 +66,9 @@ public class AppointmentController implements Initializable {
 
     @FXML
     private void onComboBoxAppointmentType(ActionEvent event) {
+        
+        ComboBoxAppointmentType.getItems().addAll("Scrum", "Presentation");
+        
     }
 
     @FXML
