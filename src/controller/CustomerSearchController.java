@@ -58,13 +58,10 @@ public class CustomerSearchController implements Initializable {
 
         
         ComboBoxSearch.getItems().addAll(languageRB.getString("Name"), languageRB.getString("Phone"));
+        
         ButtonSelect.setText(languageRB.getString("Select"));
         ButtonCancel.setText(languageRB.getString("Cancel"));
-        if(ComboBoxSearch.getPromptText().equals("Name")){
-            ComboBoxSearch.setPromptText(languageRB.getString("Name"));
-        } else if(TextFieldSearch.getPromptText().equals("Phone")) {
-            TextFieldSearch.setPromptText(languageRB.getString("Phone"));
-        }
+        
         ButtonSearch.setText(languageRB.getString("Search"));
         ComboBoxSearch.setPromptText(languageRB.getString("SearchBy"));
         ButtonNew.setText(languageRB.getString("New"));
@@ -97,7 +94,7 @@ public class CustomerSearchController implements Initializable {
     @FXML
     private void onComboBoxSearch(ActionEvent event) {
         
-        
+  
         
     }
 
