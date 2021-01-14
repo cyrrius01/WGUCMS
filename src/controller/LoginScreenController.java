@@ -23,7 +23,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import static java.time.LocalDateTime.now;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,6 +53,8 @@ public class LoginScreenController implements Initializable {
     
     private String queryResult;
     private int flag;
+    private int userId;
+    
     
     
     @Override
@@ -60,14 +65,44 @@ public class LoginScreenController implements Initializable {
         LoginButton.setText(languageRB.getString("Login"));
     }
     
+    public void genLogFile(String uname) throws IOException{
+        String logText = uname + " login at " + LocalDateTime.now();
+                File myFile = new File("logfile.txt");
+                if (myFile.createNewFile()) {
+                    System.out.println("File created");
+                } else {
+                    System.out.println("File exists");
+                }
+                Path path = Paths.get("logfile.txt");
+                Files.write(path, Arrays.asList(logText), StandardCharsets.UTF_8, 
+                        Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
+    }
+    
+    public void apptCheck(int userId) throws SQLException {
+        
+        Statement apptStatement = DBQuery.getStatement();
+        String apptQuery = "SELECT start FROM U04jTC.appointment WHERE userId = '"
+                    + userId + " AND start >= now();";
+        apptStatement.execute(apptQuery);
+        ResultSet apptRs = apptStatement.getResultSet();
+        while(apptRs.next()) {
+            Timestamp apptTime = apptRs.getTimestamp("start");
+           /// continue here
+           /// work in progress...
+        }    
+            
+    }
+    
+    
     public void onLogin(ActionEvent event) throws SQLException, IOException {
         
          // check user locale since user has launched application
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
       
-        // language code is lowercase ("fr"); country code is uppercase ("FR")
-        // property file resource bundle naming convention: 
-        //      ResourceBundleName_languageCode_optionalCountryCode.properties
+        /*  language code is lowercase ("fr"); country code is uppercase ("FR")
+             property file resource bundle naming convention: 
+              ResourceBundleName_languageCode_optionalCountryCode.properties */
+        
         
         String uname = unameTextbox.getText();
         String pword = pwordTextbox.getText();
@@ -80,7 +115,7 @@ public class LoginScreenController implements Initializable {
             blankUnamePass.showAndWait();
             
         }   else{
-            flag=1; // turn this flag on to prevent invalid message from triggering when blank uname or pass is entered
+            flag=1; // turn this flag on (1) to prevent invalid message from triggering when blank uname or pass is entered
         }
             
             // Start DB Connection            
@@ -88,28 +123,27 @@ public class LoginScreenController implements Initializable {
             DBQuery.setStatement(conn); // create statement object
             Statement statement = DBQuery.getStatement(); // get statement reference
             
+
             // Begin SQL query
-            String queryStatement = "SELECT CONCAT(userName, password) as combined FROM U04jTC.user WHERE userName = '" + uname + "' AND password = '" + pword + "'";
+            String queryStatement = "SELECT userId, userName, password FROM U04jTC.user WHERE userName = '"
+                    + uname + "' AND password = '" + pword + "'";
             statement.execute(queryStatement);
             ResultSet rs = statement.getResultSet(); // getting results from the SQL query
             
             while(rs.next()) {
                
-               queryResult = rs.getString("combined"); // "combined" is the column name of the resultset
+               queryResult = rs.getString("userName") + rs.getString("password"); //combines username and pass (testtest)
+               userId = rs.getInt("userId");
+            
             }
             
             if(queryResult != null && queryResult.equals(combined)) {
                 
-                // create log file
-                String logText = uname + " login at " + LocalDateTime.now();
-                File myFile = new File("logfile.txt");
-                if (myFile.createNewFile()) {
-                    System.out.println("File created");
-                } else {
-                    System.out.println("File exists");
-                }
-                Path path = Paths.get("logfile.txt");
-                Files.write(path, Arrays.asList(logText), StandardCharsets.UTF_8, Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
+                // valid login, create log file
+                genLogFile(uname);
+                
+                // call to appointment check within 15 minutes
+                apptCheck(userId);
                 
                 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();

@@ -21,9 +21,9 @@
       </AnchorPane>
       <TableView fx:id="TableViewCustomer" layoutX="14.0" layoutY="100.0" prefHeight="200.0" prefWidth="570.0">
         <columns>
-          <TableColumn fx:id="TableColumnFirstName" prefWidth="150.4000244140625" text="First Name" />
-          <TableColumn fx:id="TableColumnLastName" prefWidth="200.79998779296875" text="Last Name" />
-            <TableColumn fx:id="TableColumnPhone" prefWidth="219.20001220703125" text="Phone" />
+          <TableColumn fx:id="TableColumnFirstName" editable="false" prefWidth="150.4000244140625" sortable="false" text="First Name" />
+          <TableColumn fx:id="TableColumnLastName" editable="false" prefWidth="200.79998779296875" sortable="false" text="Last Name" />
+            <TableColumn fx:id="TableColumnPhone" editable="false" prefWidth="219.20001220703125" sortable="false" text="Phone" />
         </columns>
       </TableView>
       <AnchorPane layoutX="-156.0" layoutY="-131.0" prefHeight="200.0" prefWidth="200.0" />

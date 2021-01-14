@@ -19,8 +19,9 @@
       <Button fx:id="ButtonCancel" layoutX="388.0" layoutY="330.0" mnemonicParsing="false" onAction="#onButtonCancel" text="Cancel" />
       <TableView layoutX="25.0" layoutY="107.0" prefHeight="200.0" prefWidth="557.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn editable="false" prefWidth="156.0" sortable="false" text="C1" />
+          <TableColumn editable="false" prefWidth="196.0" sortable="false" text="C2" />
+            <TableColumn editable="false" prefWidth="206.4000244140625" sortable="false" text="Column X" />
         </columns>
       </TableView>
    </children>
