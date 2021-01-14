@@ -86,6 +86,8 @@ public class LoginScreenController implements Initializable {
     
     public void apptCheck(int userId) throws SQLException {
         
+        // this method checks for an appointment occurring within 15 minutes of login
+        
         Statement apptStatement = DBQuery.getStatement();
         String apptQuery = "Select apt.start, cs.customerName from U04jTC.appointment apt "
                 + "JOIN U04jTC.customer cs ON cs.customerId = apt.customerId WHERE "
@@ -100,8 +102,6 @@ public class LoginScreenController implements Initializable {
             apptCheck.setContentText(languageRB.getString("apptSoon") + " " + apptTime);
            
             apptCheck.showAndWait();
-           
-          
            
            
         }    
