@@ -24,10 +24,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import static java.time.LocalDateTime.now;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.TimeZone;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -81,14 +87,23 @@ public class LoginScreenController implements Initializable {
     public void apptCheck(int userId) throws SQLException {
         
         Statement apptStatement = DBQuery.getStatement();
-        String apptQuery = "SELECT start FROM U04jTC.appointment WHERE userId = '"
-                    + userId + " AND start >= now();";
+        String apptQuery = "Select apt.start, cs.customerName from U04jTC.appointment apt "
+                + "JOIN U04jTC.customer cs ON cs.customerId = apt.customerId WHERE "
+                + "userId = " + userId + " AND start >= NOW() AND start < NOW() + interval 16 minute";
         apptStatement.execute(apptQuery);
         ResultSet apptRs = apptStatement.getResultSet();
         while(apptRs.next()) {
             Timestamp apptTime = apptRs.getTimestamp("start");
-           /// continue here
-           /// work in progress...
+            ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+            Alert apptCheck = new Alert(AlertType.INFORMATION);
+            apptCheck.setHeaderText(null);
+            apptCheck.setContentText(languageRB.getString("apptSoon") + " " + apptTime);
+           
+            apptCheck.showAndWait();
+           
+          
+           
+           
         }    
             
     }
