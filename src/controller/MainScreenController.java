@@ -1,8 +1,13 @@
 package controller;
 
 import dao.DAOAppointment;
+import dao.DBQuery;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -54,6 +59,7 @@ public class MainScreenController implements Initializable {
     private TableColumn<DAOAppointment, String> CustomerTableColumn;
     
     public ObservableList<DAOAppointment> allAppointments = FXCollections.observableArrayList();
+    
 
     /**
      * Initializes the controller class.
@@ -74,10 +80,29 @@ public class MainScreenController implements Initializable {
         
         
         // call DAOAppointment constructor
+        // DAOAppointment appt1 = new DAOAppointment();
         
-        
-        
-        
+        Statement apptStatement = DBQuery.getStatement();
+        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time',"
+                + " cs.customerName FROM U04jTC.appointment apt JOIN U04jTC.customer cs ON "
+                + "apt.customerId = cs.customerId";
+
+        try {
+            apptStatement.execute(apptQuery);
+            ResultSet apptRs = apptStatement.getResultSet();
+
+
+
+            while(apptRs.next()){
+                
+                //make object with Date, Time, CustomerName
+                
+
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         // start population of TableView
         MainScreenTableView.setItems(allAppointments);    
         

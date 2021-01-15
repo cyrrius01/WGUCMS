@@ -1,6 +1,8 @@
 package dao;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -58,8 +60,9 @@ public class DAOAppointment {
         
     }
     
-    public static void addAppointment(DAOAppointment newPart) {
-        allAppointments.add(newPart);        
+    
+    public static void addAppointment(DAOAppointment newAppt) {
+        allAppointments.add(newAppt);        
     }
     
     // need SQL insert to add appointment
