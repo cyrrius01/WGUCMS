@@ -3,6 +3,7 @@ package dao;
 import java.time.LocalDateTime;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Appointment;
 
 /**
  *
@@ -26,7 +27,18 @@ public class DAOAppointment {
     private LocalDateTime lastUpdate;
     private String lastUpdateBy;
     
-    public ObservableList<DAOAppointment> allAppointments = FXCollections.observableArrayList();
+    private static ObservableList<DAOAppointment> allAppointments = FXCollections.observableArrayList();
+    
+    /*
+    
+    SELECT CAST(apt.start AS DATE) AS "Date", CAST(apt.start AS TIME) AS "Time", cs.customerName 
+    FROM U04jTC.appointment apt
+    JOIN U04jTC.customer cs
+    ON apt.customerId = cs.customerId
+
+    */
+    
+    
     
     public DAOAppointment(String title, String description, String location, String contact, String type,
             String url, LocalDateTime start, LocalDateTime end, LocalDateTime createDate, String createdBy, 
@@ -44,6 +56,10 @@ public class DAOAppointment {
         this.lastUpdate = lastUpdate;
         this.lastUpdateBy = lastUpdateBy;
         
+    }
+    
+    public static void addAppointment(DAOAppointment newPart) {
+        allAppointments.add(newPart);        
     }
     
     // need SQL insert to add appointment

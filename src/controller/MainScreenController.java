@@ -1,10 +1,15 @@
 package controller;
 
+import dao.DAOAppointment;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +21,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import model.Appointment;
 
 /**
  * FXML Controller class
@@ -39,15 +45,15 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button ExitButton;
     @FXML
-    private TableView<?> MainScreenTableView;
+    private TableView<DAOAppointment> MainScreenTableView;
     @FXML
-    private TableColumn<?, ?> DateTableColumn;
+    private TableColumn<DAOAppointment, LocalDate> DateTableColumn;
     @FXML
-    private TableColumn<?, ?> TimeTableColumn;
+    private TableColumn<DAOAppointment, LocalTime> TimeTableColumn;
     @FXML
-    private TableColumn<?, ?> CustomerTableColumn;
+    private TableColumn<DAOAppointment, String> CustomerTableColumn;
     
-    private int minutes = 15;
+    public ObservableList<DAOAppointment> allAppointments = FXCollections.observableArrayList();
 
     /**
      * Initializes the controller class.
@@ -67,17 +73,13 @@ public class MainScreenController implements Initializable {
         WeekHyperlink.setText(languageRB.getString("Week"));
         
         
-        // This is where we will do the appointment check within 15 minutes of login
-        
-        // order of ops
-        // do a SQL query to see what next appointment time is
-        // compare the result set to the current time
-        // if appointment time minus current time is less than 15 minutes
-        // then pop alert box
+        // call DAOAppointment constructor
         
         
-            
-            
+        
+        
+        // start population of TableView
+        MainScreenTableView.setItems(allAppointments);    
         
     }    
 
