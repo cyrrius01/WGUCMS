@@ -160,7 +160,7 @@ public class LoginScreenController implements Initializable {
                 // call to appointment check within 15 minutes
                 apptCheck(userId);
                 
-                
+                MainScreenController.receiver(userId);
                 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 

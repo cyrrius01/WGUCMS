@@ -58,64 +58,81 @@ public class MainScreenController implements Initializable {
     
     public ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     
+    private static int searchId;
+    
+    private static int runonce = 0;
+    
+    public void setSearchId(int searchId) {
+        this.searchId = searchId;
+    }
+    public int getSearchId() {
+        return this.searchId;
+    }
+    
     
 
-    /**
-     * Initializes the controller class.
-     */
+    
+    public static void receiver(int userId){
+        searchId = userId;     
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        
-        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
-        DateTableColumn.setText(languageRB.getString("Date"));
-        TimeTableColumn.setText(languageRB.getString("Time"));
-        CustomerTableColumn.setText(languageRB.getString("Customer"));
-        NewAppointmentButton.setText(languageRB.getString("NewAppointment"));
-        ManageCustomerButton.setText(languageRB.getString("ManageCustomer"));
-        ReportsButton.setText(languageRB.getString("Reports"));
-        ExitButton.setText(languageRB.getString("Exit"));
-        AllHyperlink.setText(languageRB.getString("All"));
-        MonthHyperlink.setText(languageRB.getString("Month"));
-        WeekHyperlink.setText(languageRB.getString("Week"));
-        
-        
-        
-        
-        Statement apptStatement = DBQuery.getStatement();
-        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId ";                
-               
-        try {
-            apptStatement.execute(apptQuery);
-            ResultSet apptRs = apptStatement.getResultSet();
+        if(runonce == 0) {
+            ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+            DateTableColumn.setText(languageRB.getString("Date"));
+            TimeTableColumn.setText(languageRB.getString("Time"));
+            CustomerTableColumn.setText(languageRB.getString("Customer"));
+            NewAppointmentButton.setText(languageRB.getString("NewAppointment"));
+            ManageCustomerButton.setText(languageRB.getString("ManageCustomer"));
+            ReportsButton.setText(languageRB.getString("Reports"));
+            ExitButton.setText(languageRB.getString("Exit"));
+            AllHyperlink.setText(languageRB.getString("All"));
+            MonthHyperlink.setText(languageRB.getString("Month"));
+            WeekHyperlink.setText(languageRB.getString("Week"));
 
-            while(apptRs.next()){
-                
-                java.sql.Timestamp at = apptRs.getTimestamp("Time");
-                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
-                java.sql.Date ad = apptRs.getDate("Date");
-                LocalDate apptDate = ad.toLocalDate();
-                String apptCustomer = apptRs.getString("customerName");
-                
-                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
-        
-                Appointment.addAppointment(newAppointment);
-                System.out.println("Added appointment");
+            Statement apptStatement = DBQuery.getStatement();
+            String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+                    + "WHERE us.userId = " + searchId;                
+
+            try {
+                apptStatement.execute(apptQuery);
+                ResultSet apptRs = apptStatement.getResultSet();
+
+                while(apptRs.next()){
+
+                    java.sql.Timestamp at = apptRs.getTimestamp("Time");
+                    LocalTime apptTime = at.toLocalDateTime().toLocalTime();
+                    java.sql.Date ad = apptRs.getDate("Date");
+                    LocalDate apptDate = ad.toLocalDate();
+                    String apptCustomer = apptRs.getString("customerName");
+
+                    Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+
+                    if(!Appointment.getAllAppointments().contains(newAppointment)) {
+                        Appointment.addAppointment(newAppointment);
+                    }   
+                    else {
+                        break;
+                    }
+
+                }
             }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            runonce = 1;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        // start population of TableView
-        MainScreenTableView.setItems(Appointment.getAllAppointments());
-        
-        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
-        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
-        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
-       
-        
-        
+// start population of TableView
+            MainScreenTableView.setItems(Appointment.getAllAppointments());
+
+
+            DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+            TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
+            CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
+            
     }    
 
     @FXML
@@ -128,6 +145,7 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void OnAllHyperlink(ActionEvent event) {
+        MainScreenTableView.setItems(Appointment.getAllAppointments());
     }
 
     @FXML
