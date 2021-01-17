@@ -4,12 +4,9 @@ import dao.DAOAppointment;
 import dao.DBQuery;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -50,15 +47,16 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button ExitButton;
     @FXML
-    private TableView<DAOAppointment> MainScreenTableView;
+    private TableView<Appointment> MainScreenTableView;
     @FXML
-    private TableColumn<DAOAppointment, LocalDate> DateTableColumn;
+    private TableColumn<Appointment, LocalDate> DateTableColumn;
     @FXML
-    private TableColumn<DAOAppointment, LocalTime> TimeTableColumn;
+    private TableColumn<Appointment, LocalTime> TimeTableColumn;
     @FXML
-    private TableColumn<DAOAppointment, String> CustomerTableColumn;
+    private TableColumn<Appointment, String> CustomerTableColumn;
     
-    public ObservableList<DAOAppointment> allAppointments = FXCollections.observableArrayList();
+    public ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    
     
 
     /**
@@ -92,19 +90,27 @@ public class MainScreenController implements Initializable {
             ResultSet apptRs = apptStatement.getResultSet();
 
 
-
+            
             while(apptRs.next()){
                 
-                //make object with Date, Time, CustomerName
+                java.sql.Timestamp at = apptRs.getTimestamp("Time");
+                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
+                java.sql.Date ad = apptRs.getDate("Date");
+                LocalDate apptDate = ad.toLocalDate();
+                String apptCustomer = apptRs.getString("customerName");
                 
-
+                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+        
+                Appointment.addAppointment(newAppointment);
+                System.out.println("Added appointment");
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         // start population of TableView
-        MainScreenTableView.setItems(allAppointments);    
+        MainScreenTableView.setItems(Appointment.getAllAppointments());
+        
         
     }    
 

@@ -29,16 +29,7 @@ public class DAOAppointment {
     private LocalDateTime lastUpdate;
     private String lastUpdateBy;
     
-    private static ObservableList<DAOAppointment> allAppointments = FXCollections.observableArrayList();
     
-    /*
-    
-    SELECT CAST(apt.start AS DATE) AS "Date", CAST(apt.start AS TIME) AS "Time", cs.customerName 
-    FROM U04jTC.appointment apt
-    JOIN U04jTC.customer cs
-    ON apt.customerId = cs.customerId
-
-    */
     
     
     
@@ -61,9 +52,7 @@ public class DAOAppointment {
     }
     
     
-    public static void addAppointment(DAOAppointment newAppt) {
-        allAppointments.add(newAppt);        
-    }
+    
     
     // need SQL insert to add appointment
     // need SQL update to edit appointment
