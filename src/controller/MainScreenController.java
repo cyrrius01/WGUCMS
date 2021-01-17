@@ -22,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
 
@@ -64,6 +65,8 @@ public class MainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
         DateTableColumn.setText(languageRB.getString("Date"));
         TimeTableColumn.setText(languageRB.getString("Time"));
@@ -77,20 +80,16 @@ public class MainScreenController implements Initializable {
         WeekHyperlink.setText(languageRB.getString("Week"));
         
         
-        // call DAOAppointment constructor
-        // DAOAppointment appt1 = new DAOAppointment();
+        
         
         Statement apptStatement = DBQuery.getStatement();
-        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time',"
-                + " cs.customerName FROM U04jTC.appointment apt JOIN U04jTC.customer cs ON "
-                + "apt.customerId = cs.customerId";
-
+        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId ";                
+               
         try {
             apptStatement.execute(apptQuery);
             ResultSet apptRs = apptStatement.getResultSet();
 
-
-            
             while(apptRs.next()){
                 
                 java.sql.Timestamp at = apptRs.getTimestamp("Time");
@@ -110,6 +109,11 @@ public class MainScreenController implements Initializable {
         }
         // start population of TableView
         MainScreenTableView.setItems(Appointment.getAllAppointments());
+        
+        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
+        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
+       
         
         
     }    

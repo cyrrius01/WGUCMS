@@ -19,9 +19,9 @@
             <Button fx:id="NewAppointmentButton" layoutX="39.0" layoutY="318.0" mnemonicParsing="false" onAction="#onNewAppointmentClick" text="New Appointment" />
             <TableView fx:id="MainScreenTableView" layoutX="-1.0" maxHeight="243.0" maxWidth="600.0" minHeight="243.0" minWidth="600.0" prefHeight="243.0" prefWidth="600.0">
               <columns>
-                <TableColumn fx:id="DateTableColumn" editable="false" prefWidth="115.1999785900116" sortable="false" text="Date" />
-                <TableColumn fx:id="TimeTableColumn" editable="false" prefWidth="111.20001220703125" sortable="false" text="Time" />
-                  <TableColumn fx:id="CustomerTableColumn" editable="false" minWidth="0.0" prefWidth="374.40001525878904" sortable="false" text="Customer" />
+                <TableColumn fx:id="DateTableColumn" prefWidth="115.1999785900116" text="Date" />
+                <TableColumn fx:id="TimeTableColumn" prefWidth="111.20001220703125" text="Time" />
+                  <TableColumn fx:id="CustomerTableColumn" minWidth="0.0" prefWidth="374.40001525878904" text="Customer" />
               </columns>
             </TableView>
          </children>

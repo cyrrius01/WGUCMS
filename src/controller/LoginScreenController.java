@@ -161,6 +161,7 @@ public class LoginScreenController implements Initializable {
                 apptCheck(userId);
                 
                 
+                
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
                 Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
