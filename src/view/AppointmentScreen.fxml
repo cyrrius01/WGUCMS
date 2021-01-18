@@ -13,14 +13,13 @@
             <ComboBox fx:id="ComboBoxAppointmentType" layoutX="24.0" layoutY="29.0" onAction="#onComboBoxAppointmentType" prefHeight="25.0" prefWidth="222.0" promptText="Appointment Type" />
             <DatePicker fx:id="DatePickerNewAppointment" layoutX="23.0" layoutY="60.0" onAction="#onDatePickerNewAppointment" prefHeight="25.0" prefWidth="222.0" promptText="Date" />
             <ComboBox fx:id="ComboBoxTime" layoutX="24.0" layoutY="92.0" onAction="#onComboBoxTime" prefHeight="25.0" prefWidth="222.0" promptText="Time" />
-            <TextField fx:id="TextFieldFirstName" layoutX="23.0" layoutY="124.0" prefHeight="25.0" prefWidth="222.0" promptText="First Name" />
-            <TextField fx:id="TextFieldLastName" layoutX="23.0" layoutY="154.0" prefHeight="25.0" prefWidth="222.0" promptText="Last Name" />
-            <TextField fx:id="TextFieldPhone" layoutX="23.0" layoutY="184.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
-            <TextField fx:id="TextFieldStreetAddress" layoutX="24.0" layoutY="214.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
-            <TextField fx:id="TextFieldAptSte" layoutX="24.0" layoutY="244.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
-            <TextField fx:id="TextFieldCity" layoutX="24.0" layoutY="274.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
-            <TextField fx:id="TextFieldPostalCode" layoutX="23.0" layoutY="304.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
-            <TextField fx:id="TextFieldCountry" layoutX="23.0" layoutY="334.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
+            <TextField fx:id="TextFieldName" layoutX="23.0" layoutY="124.0" prefHeight="25.0" prefWidth="222.0" promptText="Customer Name" />
+            <TextField fx:id="TextFieldPhone" layoutX="23.0" layoutY="154.0" prefHeight="25.0" prefWidth="222.0" promptText="Phone" />
+            <TextField fx:id="TextFieldStreetAddress" layoutX="24.0" layoutY="184.0" prefHeight="25.0" prefWidth="222.0" promptText="Street Address" />
+            <TextField fx:id="TextFieldAptSte" layoutX="24.0" layoutY="214.0" prefHeight="25.0" prefWidth="222.0" promptText="Apt / Ste" />
+            <TextField fx:id="TextFieldCity" layoutX="24.0" layoutY="244.0" prefHeight="25.0" prefWidth="222.0" promptText="City" />
+            <TextField fx:id="TextFieldPostalCode" layoutX="23.0" layoutY="274.0" prefHeight="25.0" prefWidth="222.0" promptText="Postal Code" />
+            <TextField fx:id="TextFieldCountry" layoutX="23.0" layoutY="304.0" prefHeight="25.0" prefWidth="222.0" promptText="Country" />
          </children>
       </AnchorPane>
       <Button fx:id="ButtonSave" layoutX="32.0" layoutY="379.0" mnemonicParsing="false" onAction="#onButtonSave" text="Save" />
