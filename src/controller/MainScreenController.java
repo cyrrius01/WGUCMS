@@ -1,6 +1,5 @@
 package controller;
 
-import dao.DAOAppointment;
 import dao.DBQuery;
 import java.io.IOException;
 import java.net.URL;
@@ -58,10 +57,7 @@ public class MainScreenController implements Initializable {
     
     public ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     public ObservableList<Appointment> monthAppointments = FXCollections.observableArrayList();
-    
     private static int searchId;
-    
-    
     
     public void setSearchId(int searchId) {
         this.searchId = searchId;
