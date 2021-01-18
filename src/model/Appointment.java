@@ -16,6 +16,7 @@ public class Appointment {
     private String apptCustomer;
     
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    private static ObservableList<Appointment> monthAppointments = FXCollections.observableArrayList();
     
     public Appointment(LocalDate apptDate, LocalTime apptTime, String apptCustomer) {
         this.apptDate = apptDate;
@@ -51,9 +52,16 @@ public class Appointment {
     public static ObservableList<Appointment> getAllAppointments() {
         return allAppointments;
     }
+    public static ObservableList<Appointment> getMonthAppointments() {
+        return monthAppointments;
+    }
     
     public static void addAppointment(Appointment newAppointment) {
         allAppointments.add(newAppointment);        
+    }
+    
+    public static void addMonthAppointment(Appointment newMonthAppointment) {
+        monthAppointments.add(newMonthAppointment);
     }
     
     

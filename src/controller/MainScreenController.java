@@ -57,10 +57,11 @@ public class MainScreenController implements Initializable {
     private TableColumn<Appointment, String> CustomerTableColumn;
     
     public ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
+    public ObservableList<Appointment> monthAppointments = FXCollections.observableArrayList();
     
     private static int searchId;
     
-    private static int runonce = 0;
+    
     
     public void setSearchId(int searchId) {
         this.searchId = searchId;
@@ -78,8 +79,15 @@ public class MainScreenController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+                
+        allAppointments.clear();
+        monthAppointments.clear();
         
-        if(runonce == 0) {
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
+        
+        
+        
             ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
             DateTableColumn.setText(languageRB.getString("Date"));
             TimeTableColumn.setText(languageRB.getString("Time"));
@@ -123,11 +131,10 @@ public class MainScreenController implements Initializable {
             catch (Exception e) {
                 e.printStackTrace();
             }
-            runonce = 1;
-        }
-// start population of TableView
+          
+        
+            // start population of TableView
             MainScreenTableView.setItems(Appointment.getAllAppointments());
-
 
             DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
             TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
@@ -137,6 +144,54 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void OnMonthHyperlink(ActionEvent event) {
+        
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
+        
+     
+        Statement apptStatement = DBQuery.getStatement();
+            String monthQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+                    + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= LAST_DAY(now())";                
+
+            try {
+                apptStatement.execute(monthQuery);
+                ResultSet apptRs = apptStatement.getResultSet();
+        
+            
+            
+            while(apptRs.next()) {
+                
+                java.sql.Timestamp at = apptRs.getTimestamp("Time");
+                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
+                java.sql.Date ad = apptRs.getDate("Date");
+                LocalDate apptDate = ad.toLocalDate();
+                String apptCustomer = apptRs.getString("customerName");
+
+                Appointment newMonthAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+
+                if(!Appointment.getMonthAppointments().contains(newMonthAppointment)) {
+                    Appointment.addMonthAppointment(newMonthAppointment);
+                }   
+                else {
+                    break;
+                }
+                
+            }
+            
+            
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        MainScreenTableView.setItems(Appointment.getMonthAppointments());
+
+        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
+        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));   
     }
 
     @FXML
@@ -145,12 +200,62 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void OnAllHyperlink(ActionEvent event) {
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
+        
+        
+     
+        Statement apptStatement = DBQuery.getStatement();
+            String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+                    + "WHERE us.userId = " + searchId;                
+
+            try {
+                apptStatement.execute(apptQuery);
+                ResultSet apptRs = apptStatement.getResultSet();
+        
+            
+            
+            while(apptRs.next()) {
+                
+                java.sql.Timestamp at = apptRs.getTimestamp("Time");
+                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
+                java.sql.Date ad = apptRs.getDate("Date");
+                LocalDate apptDate = ad.toLocalDate();
+                String apptCustomer = apptRs.getString("customerName");
+
+                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+
+                if(!Appointment.getAllAppointments().contains(newAppointment)) {
+                    Appointment.addAppointment(newAppointment);
+                }   
+                else {
+                    break;
+                }
+                
+            }
+            
+            
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
         MainScreenTableView.setItems(Appointment.getAllAppointments());
+
+        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
+        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
     }
 
     @FXML
     private void onNewAppointmentClick(ActionEvent event) throws IOException {
-        
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/NewOrExistingBox.fxml"));
@@ -165,6 +270,10 @@ public class MainScreenController implements Initializable {
     @FXML
     private void onManageCustomerClick(ActionEvent event) throws IOException {
         
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/CustomerSearch.fxml"));
@@ -179,6 +288,10 @@ public class MainScreenController implements Initializable {
     @FXML
     private void OnReportsClick(ActionEvent event) throws IOException {
         
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
         Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
