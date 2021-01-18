@@ -196,6 +196,55 @@ public class MainScreenController implements Initializable {
 
     @FXML
     private void OnWeekHyperlink(ActionEvent event) {
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
+        
+        
+     
+        Statement apptStatement = DBQuery.getStatement();
+            String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+                    + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= DATE(NOW() + INTERVAL(7-DAYOFWEEK(NOW())) DAY)";                
+
+            try {
+                apptStatement.execute(apptQuery);
+                ResultSet apptRs = apptStatement.getResultSet();
+        
+            
+            
+            while(apptRs.next()) {
+                
+                java.sql.Timestamp at = apptRs.getTimestamp("Time");
+                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
+                java.sql.Date ad = apptRs.getDate("Date");
+                LocalDate apptDate = ad.toLocalDate();
+                String apptCustomer = apptRs.getString("customerName");
+
+                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+
+                if(!Appointment.getAllAppointments().contains(newAppointment)) {
+                    Appointment.addAppointment(newAppointment);
+                }   
+                else {
+                    break;
+                }
+                
+            }
+            
+            
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        MainScreenTableView.setItems(Appointment.getAllAppointments());
+
+        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
+        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
+        
     }
 
     @FXML
