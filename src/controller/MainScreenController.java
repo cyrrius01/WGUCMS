@@ -69,10 +69,7 @@ public class MainScreenController implements Initializable {
     public int getSearchId() {
         return this.searchId;
     }
-    
-    
 
-    
     public static void receiver(int userId){
         searchId = userId;     
     }
@@ -80,276 +77,90 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
                 
-        allAppointments.clear();
-        monthAppointments.clear();
+        clearForm();
         
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
-        
-        
-        
-            ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
-            DateTableColumn.setText(languageRB.getString("Date"));
-            TimeTableColumn.setText(languageRB.getString("Time"));
-            CustomerTableColumn.setText(languageRB.getString("Customer"));
-            NewAppointmentButton.setText(languageRB.getString("NewAppointment"));
-            ManageCustomerButton.setText(languageRB.getString("ManageCustomer"));
-            ReportsButton.setText(languageRB.getString("Reports"));
-            ExitButton.setText(languageRB.getString("Exit"));
-            AllHyperlink.setText(languageRB.getString("All"));
-            MonthHyperlink.setText(languageRB.getString("Month"));
-            WeekHyperlink.setText(languageRB.getString("Week"));
+        ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+        DateTableColumn.setText(languageRB.getString("Date"));
+        TimeTableColumn.setText(languageRB.getString("Time"));
+        CustomerTableColumn.setText(languageRB.getString("Customer"));
+        NewAppointmentButton.setText(languageRB.getString("NewAppointment"));
+        ManageCustomerButton.setText(languageRB.getString("ManageCustomer"));
+        ReportsButton.setText(languageRB.getString("Reports"));
+        ExitButton.setText(languageRB.getString("Exit"));
+        AllHyperlink.setText(languageRB.getString("All"));
+        MonthHyperlink.setText(languageRB.getString("Month"));
+        WeekHyperlink.setText(languageRB.getString("Week"));
 
-            Statement apptStatement = DBQuery.getStatement();
-            String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-                    + "WHERE us.userId = " + searchId;                
 
-            try {
-                apptStatement.execute(apptQuery);
-                ResultSet apptRs = apptStatement.getResultSet();
+        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+            + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+            + "WHERE us.userId = " + searchId;                
 
-                while(apptRs.next()){
-
-                    java.sql.Timestamp at = apptRs.getTimestamp("Time");
-                    LocalTime apptTime = at.toLocalDateTime().toLocalTime();
-                    java.sql.Date ad = apptRs.getDate("Date");
-                    LocalDate apptDate = ad.toLocalDate();
-                    String apptCustomer = apptRs.getString("customerName");
-
-                    Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
-
-                    if(!Appointment.getAllAppointments().contains(newAppointment)) {
-                        Appointment.addAppointment(newAppointment);
-                    }   
-                    else {
-                        break;
-                    }
-
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-          
-        
-            // start population of TableView
-            MainScreenTableView.setItems(Appointment.getAllAppointments());
-
-            DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
-            TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
-            CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
-            
+        populateTV(apptQuery);
     }    
 
     @FXML
     private void OnMonthHyperlink(ActionEvent event) {
         
-        allAppointments.clear();
-        monthAppointments.clear();
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
+        clearForm();
         
-     
-        Statement apptStatement = DBQuery.getStatement();
-            String monthQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-                    + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= LAST_DAY(now())";                
+        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+            + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+            + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= LAST_DAY(now())";                
 
-            try {
-                apptStatement.execute(monthQuery);
-                ResultSet apptRs = apptStatement.getResultSet();
-        
-            
-            
-            while(apptRs.next()) {
-                
-                java.sql.Timestamp at = apptRs.getTimestamp("Time");
-                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
-                java.sql.Date ad = apptRs.getDate("Date");
-                LocalDate apptDate = ad.toLocalDate();
-                String apptCustomer = apptRs.getString("customerName");
+        populateTV(apptQuery);
 
-                Appointment newMonthAppointment = new Appointment(apptDate, apptTime, apptCustomer);
-
-                if(!Appointment.getMonthAppointments().contains(newMonthAppointment)) {
-                    Appointment.addMonthAppointment(newMonthAppointment);
-                }   
-                else {
-                    break;
-                }
-                
-            }
-            
-            
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        MainScreenTableView.setItems(Appointment.getMonthAppointments());
-
-        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
-        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
-        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));   
     }
 
     @FXML
     private void OnWeekHyperlink(ActionEvent event) {
-        allAppointments.clear();
-        monthAppointments.clear();
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
+        clearForm();
         
-        
-     
-        Statement apptStatement = DBQuery.getStatement();
-            String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-                    + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= DATE(NOW() + INTERVAL(7-DAYOFWEEK(NOW())) DAY)";                
+        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+                + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= DATE(NOW() + INTERVAL(7-DAYOFWEEK(NOW())) DAY)";                
 
-            try {
-                apptStatement.execute(apptQuery);
-                ResultSet apptRs = apptStatement.getResultSet();
-        
-            
-            
-            while(apptRs.next()) {
-                
-                java.sql.Timestamp at = apptRs.getTimestamp("Time");
-                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
-                java.sql.Date ad = apptRs.getDate("Date");
-                LocalDate apptDate = ad.toLocalDate();
-                String apptCustomer = apptRs.getString("customerName");
-
-                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
-
-                if(!Appointment.getAllAppointments().contains(newAppointment)) {
-                    Appointment.addAppointment(newAppointment);
-                }   
-                else {
-                    break;
-                }
-                
-            }
-            
-            
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        MainScreenTableView.setItems(Appointment.getAllAppointments());
-
-        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
-        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
-        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
-        
+        populateTV(apptQuery);
     }
 
     @FXML
     private void OnAllHyperlink(ActionEvent event) {
-        allAppointments.clear();
-        monthAppointments.clear();
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
-        
-        
+        clearForm();
      
-        Statement apptStatement = DBQuery.getStatement();
-            String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                    + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-                    + "WHERE us.userId = " + searchId;                
-
-            try {
-                apptStatement.execute(apptQuery);
-                ResultSet apptRs = apptStatement.getResultSet();
+        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
+                + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
+                + "WHERE us.userId = " + searchId;  
         
-            
-            
-            while(apptRs.next()) {
-                
-                java.sql.Timestamp at = apptRs.getTimestamp("Time");
-                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
-                java.sql.Date ad = apptRs.getDate("Date");
-                LocalDate apptDate = ad.toLocalDate();
-                String apptCustomer = apptRs.getString("customerName");
-
-                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
-
-                if(!Appointment.getAllAppointments().contains(newAppointment)) {
-                    Appointment.addAppointment(newAppointment);
-                }   
-                else {
-                    break;
-                }
-                
-            }
-            
-            
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        MainScreenTableView.setItems(Appointment.getAllAppointments());
-
-        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
-        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
-        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
+        populateTV(apptQuery);
     }
 
     @FXML
     private void onNewAppointmentClick(ActionEvent event) throws IOException {
-        allAppointments.clear();
-        monthAppointments.clear();
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
+        clearForm();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/NewOrExistingBox.fxml"));
-
-        Stage newStage = new Stage();
-        newStage.setTitle(null);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.show();
+        String url = "/view/NewOrExistingBox.fxml";
+        stageSetup(url);
     }
 
     @FXML
     private void onManageCustomerClick(ActionEvent event) throws IOException {
         
-        allAppointments.clear();
-        monthAppointments.clear();
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
+        clearForm();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/view/CustomerSearch.fxml"));
-
-        Stage newStage = new Stage();
-        newStage.setTitle(null);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.show();
+        
+        String url = "/view/CustomerSearch.fxml";
+        stageSetup(url);
+        
     }
 
     @FXML
     private void OnReportsClick(ActionEvent event) throws IOException {
+        clearForm();
         
-        allAppointments.clear();
-        monthAppointments.clear();
-        MainScreenTableView.getItems().clear();
-        MainScreenTableView.refresh();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-        Parent root = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
-
-        Stage newStage = new Stage();
-        newStage.setTitle(null);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.show();
+        String url = "/view/Reports.fxml";
+        stageSetup(url);
         
     }
 
@@ -358,11 +169,64 @@ public class MainScreenController implements Initializable {
         
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-        
         System.out.println("Main Exit Clicked");
         System.exit(0);
-    
-        
+   
     }
     
+    private void clearForm(){
+        allAppointments.clear();
+        monthAppointments.clear();
+        MainScreenTableView.getItems().clear();
+        MainScreenTableView.refresh();
+    }
+    
+    private void stageSetup(String url) throws IOException{
+
+        Parent root = FXMLLoader.load(getClass().getResource(url));
+
+        Stage newStage = new Stage();
+        newStage.setTitle(null);
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        newStage.show();
+    }
+    
+    
+    private void populateTV(String apptQuery) {
+        Statement apptStatement = DBQuery.getStatement();
+        
+        try {
+            apptStatement.execute(apptQuery);
+            ResultSet apptRs = apptStatement.getResultSet();
+
+            while(apptRs.next()) {
+
+                java.sql.Timestamp at = apptRs.getTimestamp("Time");
+                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
+                java.sql.Date ad = apptRs.getDate("Date");
+                LocalDate apptDate = ad.toLocalDate();
+                String apptCustomer = apptRs.getString("customerName");
+
+                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+
+                if(!Appointment.getAllAppointments().contains(newAppointment)) {
+                    Appointment.addAppointment(newAppointment);
+                }   
+                else {
+                    break;
+                }
+
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        MainScreenTableView.setItems(Appointment.getAllAppointments());
+        DateTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDate"));
+        TimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTime"));
+        CustomerTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer"));
+    }
 }
