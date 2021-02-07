@@ -32,6 +32,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.TimeZone;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +40,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import utilities.TimeFiles;
 
 
 
@@ -94,16 +96,17 @@ public class LoginScreenController implements Initializable {
                 + "userId = " + userId + " AND start >= NOW() AND start < NOW() + interval 16 minute";
         apptStatement.execute(apptQuery);
         ResultSet apptRs = apptStatement.getResultSet();
+        
         while(apptRs.next()) {
             Timestamp apptTime = apptRs.getTimestamp("start");
+            
             ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
             Alert apptCheck = new Alert(AlertType.INFORMATION);
             apptCheck.setHeaderText(null);
-            apptCheck.setContentText(languageRB.getString("apptSoon") + " " + apptTime);
+            apptCheck.setContentText(languageRB.getString("apptSoon") + 
+                    TimeFiles.toLocal(apptTime) + ".");
            
             apptCheck.showAndWait();
-           
-           
         }    
             
     }
