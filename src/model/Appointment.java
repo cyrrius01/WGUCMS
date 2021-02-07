@@ -11,32 +11,32 @@ import javafx.collections.ObservableList;
  */
 public class Appointment {
     
-    private LocalDate apptDate;
-    private LocalTime apptTime;
+    private String apptDate;
+    private String apptTime;
     private String apptCustomer;
     
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     private static ObservableList<Appointment> monthAppointments = FXCollections.observableArrayList();
     
-    public Appointment(LocalDate apptDate, LocalTime apptTime, String apptCustomer) {
+    public Appointment(String apptDate, String apptTime, String apptCustomer) {
         this.apptDate = apptDate;
         this.apptTime = apptTime;
         this.apptCustomer = apptCustomer;
     }
     
-    public void setApptDate(LocalDate apptDate) {
+    public void setApptDate(String apptDate) {
         this.apptDate = apptDate;
     }
     
-    public LocalDate getApptDate() {
+    public String getApptDate() {
         return apptDate;
     }
     
-    public void setApptTime(LocalTime apptTime) {
+    public void setApptTime(String apptTime) {
         this.apptTime = apptTime;
     }
     
-    public LocalTime getApptTime() {
+    public String getApptTime() {
         return apptTime;
     }
     

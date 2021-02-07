@@ -104,7 +104,7 @@ public class LoginScreenController implements Initializable {
             Alert apptCheck = new Alert(AlertType.INFORMATION);
             apptCheck.setHeaderText(null);
             apptCheck.setContentText(languageRB.getString("apptSoon") + 
-                    TimeFiles.toLocal(apptTime) + ".");
+                    TimeFiles.toLocalTime(apptTime) + ".");
            
             apptCheck.showAndWait();
         }    

@@ -3,8 +3,10 @@ package controller;
 import dao.DBQuery;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Locale;
@@ -24,6 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import utilities.TimeFiles;
 
 /**
  * FXML Controller class
@@ -198,13 +201,12 @@ public class MainScreenController implements Initializable {
 
             while(apptRs.next()) {
 
-                java.sql.Timestamp at = apptRs.getTimestamp("Time");
-                LocalTime apptTime = at.toLocalDateTime().toLocalTime();
-                java.sql.Date ad = apptRs.getDate("Date");
-                LocalDate apptDate = ad.toLocalDate();
+                Timestamp apptTime = apptRs.getTimestamp("Time");
+                Timestamp apptDate = apptRs.getTimestamp("Date");
                 String apptCustomer = apptRs.getString("customerName");
 
-                Appointment newAppointment = new Appointment(apptDate, apptTime, apptCustomer);
+                Appointment newAppointment = new Appointment(TimeFiles.toLocalDate(apptDate), 
+                        TimeFiles.toLocalTime(apptTime), apptCustomer);
 
                 if(!Appointment.getAllAppointments().contains(newAppointment)) {
                     Appointment.addAppointment(newAppointment);
