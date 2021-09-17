@@ -8,18 +8,19 @@ public class DBConnection {
     // JDBC URL parts
     private static final String protocol = "jdbc";
     private static final String vendorName = ":mysql:";
-    private static final String ipAddress = "//wgudb.ucertify.com/U04jTC";
+    private static final String location = "//localhost/";
+    private static final String databaseName = "client_schedule";
     
     // JDBC URL
-    private static final String jdbcURL = protocol + vendorName + ipAddress;
+    private static final String jdbcURL = protocol + vendorName + location + databaseName + "?connectionTimeZone = SERVER";
     
     // Driver and Connection Interface Reference
     private static final String MYSQLJDBCDriver = "com.mysql.jdbc.Driver";
-    private static Connection conn;
+    public static Connection conn;
     
-    private static final String username = "U04jTC"; // Username
+    private static final String username = "sqlUser"; // Username
     
-    private static final String password = "53688261646"; // Password
+    private static final String password = "Passw0rd!"; // Password
     
     public static Connection startConnection() {
         
