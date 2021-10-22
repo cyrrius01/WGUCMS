@@ -1,16 +1,6 @@
 package controller;
 
 import dao.DBQuery;
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,7 +16,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import utilities.TimeFiles;
+
+import java.io.IOException;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * FXML Controller class
@@ -62,22 +60,13 @@ public class MainScreenController implements Initializable {
     public ObservableList<Appointment> monthAppointments = FXCollections.observableArrayList();
     private static int searchId;
     
-    public void setSearchId(int searchId) {
-        this.searchId = searchId;
-    }
-    public int getSearchId() {
-        return this.searchId;
-    }
 
-    public static void receiver(int userId){
-        searchId = userId;     
-    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
                 
         clearForm();
-        
+
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
         DateTableColumn.setText(languageRB.getString("Date"));
         TimeTableColumn.setText(languageRB.getString("Time"));
@@ -90,10 +79,7 @@ public class MainScreenController implements Initializable {
         MonthHyperlink.setText(languageRB.getString("Month"));
         WeekHyperlink.setText(languageRB.getString("Week"));
 
-
-        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-            + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-            + "WHERE us.userId = " + searchId;                
+        String apptQuery = DBQuery.getAllAppointments();
 
         populateTV(apptQuery);
     }    
@@ -102,10 +88,8 @@ public class MainScreenController implements Initializable {
     private void OnMonthHyperlink(ActionEvent event) {
         
         clearForm();
-        
-        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-            + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-            + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= LAST_DAY(now())";                
+
+        String apptQuery = DBQuery.getMonthAppointments();
 
         populateTV(apptQuery);
 
@@ -115,20 +99,15 @@ public class MainScreenController implements Initializable {
     private void OnWeekHyperlink(ActionEvent event) {
         clearForm();
         
-        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-                + "WHERE us.userId = " + searchId + " AND apt.start >= now() AND apt.start <= DATE(NOW() + INTERVAL(7-DAYOFWEEK(NOW())) DAY)";                
-
+        String apptQuery = DBQuery.getWeekAppointments();
         populateTV(apptQuery);
     }
 
     @FXML
     private void OnAllHyperlink(ActionEvent event) {
         clearForm();
-     
-        String apptQuery = "SELECT CAST(apt.start AS DATE) AS 'Date', CAST(apt.start AS TIME) AS 'Time', cs.customerName"
-                + " FROM U04jTC.appointment apt JOIN U04jTC.customer cs JOIN U04jTC.user us ON apt.customerId = cs.customerId AND apt.userId = us.userId "
-                + "WHERE us.userId = " + searchId;  
+
+        String apptQuery = DBQuery.getAllAppointments();
         
         populateTV(apptQuery);
     }
@@ -138,7 +117,7 @@ public class MainScreenController implements Initializable {
         clearForm();
         ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
-        String url = "/view/NewOrExistingBox.fxml";
+        String url = "/view/AppointmentScreen.fxml";
         stageSetup(url);
     }
 
@@ -203,11 +182,23 @@ public class MainScreenController implements Initializable {
 
                 Timestamp apptTime = apptRs.getTimestamp("Time");
                 Timestamp apptDate = apptRs.getTimestamp("Date");
-                String apptCustomer = apptRs.getString("customerName");
+                String apptCustomer = apptRs.getString("Customer_Name");
 
-                Appointment newAppointment = new Appointment(TimeFiles.toLocalDate(apptDate), 
-                        TimeFiles.toLocalTime(apptTime), apptCustomer);
+                System.out.println("time"+ apptTime + " " + "Date" + apptDate + " " + "Customer" + apptCustomer);
 
+
+                LocalDateTime ldt = apptTime.toLocalDateTime();
+                ZonedDateTime zdt = ZonedDateTime.of(ldt, ZoneId.of("GMT"));
+                System.out.println("zdt = " + zdt);
+                ZonedDateTime targetZdt = zdt.withZoneSameInstant(ZoneId.of("America/New_York"));
+                System.out.println("targetZdt = " + targetZdt); // this is where the hour is "lost", the system is doing GMT - 5 here instead of 4 for daylight saving time
+                LocalDateTime cvrtLdt = targetZdt.toLocalDateTime();
+                LocalTime ltSend = cvrtLdt.toLocalTime();
+
+                Appointment newAppointment = new Appointment(apptDate.toLocalDateTime().toLocalDate(),
+                        ltSend, apptCustomer);
+
+                // check to see if appointment already exists
                 if(!Appointment.getAllAppointments().contains(newAppointment)) {
                     Appointment.addAppointment(newAppointment);
                 }   

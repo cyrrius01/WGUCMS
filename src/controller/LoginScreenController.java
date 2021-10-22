@@ -1,6 +1,16 @@
 package controller;
 
 import dao.DBQuery;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -9,38 +19,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import javafx.fxml.Initializable;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import static java.time.LocalDateTime.now;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.Arrays;
-import java.util.TimeZone;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
-import utilities.TimeFiles;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 
@@ -58,6 +46,10 @@ public class LoginScreenController implements Initializable {
     @FXML
     private Label LabelPassword;
     @FXML
+    private TextField localeTextbox;
+    @FXML
+    private Label LabelLocale;
+    @FXML
     
     private String queryResult;
     private int flag;
@@ -70,6 +62,12 @@ public class LoginScreenController implements Initializable {
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
         LabelUsername.setText(languageRB.getString("Username"));
         LabelPassword.setText(languageRB.getString("Password"));
+        LabelLocale.setText(languageRB.getString("Locale"));
+
+        ZoneId z = ZoneId.systemDefault();
+        System.out.println(z.getDisplayName(TextStyle.FULL, Locale.ROOT));
+        localeTextbox.setText(z.getDisplayName(TextStyle.FULL, Locale.ROOT)); // set locale ID to user's locale
+
         LoginButton.setText(languageRB.getString("Login"));
     }
     
@@ -86,30 +84,7 @@ public class LoginScreenController implements Initializable {
                         Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
     }
     
-    public void apptCheck(int userId) throws SQLException {
-        
-        // this method checks for an appointment occurring within 15 minutes of login
-        
-        Statement apptStatement = DBQuery.getStatement();
-        String apptQuery = "Select apt.start, cs.customerName from U04jTC.appointment apt "
-                + "JOIN U04jTC.customer cs ON cs.customerId = apt.customerId WHERE "
-                + "userId = " + userId + " AND start >= NOW() AND start < NOW() + interval 16 minute";
-        apptStatement.execute(apptQuery);
-        ResultSet apptRs = apptStatement.getResultSet();
-        
-        while(apptRs.next()) {
-            Timestamp apptTime = apptRs.getTimestamp("start");
-            
-            ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
-            Alert apptCheck = new Alert(AlertType.INFORMATION);
-            apptCheck.setHeaderText(null);
-            apptCheck.setContentText(languageRB.getString("apptSoon") + 
-                    TimeFiles.toLocalTime(apptTime) + ".");
-           
-            apptCheck.showAndWait();
-        }    
-            
-    }
+
     
     
     public void onLogin(ActionEvent event) throws SQLException, IOException {
@@ -137,21 +112,20 @@ public class LoginScreenController implements Initializable {
         }
             
             // Start DB Connection            
-            Connection conn = dao.DBConnection.startConnection();
-            DBQuery.setStatement(conn); // create statement object
+            Connection connection = dao.DBConnection.startConnection();
+            DBQuery.setStatement(connection); // create statement object
             Statement statement = DBQuery.getStatement(); // get statement reference
             
 
             // Begin SQL query
-            String queryStatement = "SELECT userId, userName, password FROM U04jTC.user WHERE userName = '"
-                    + uname + "' AND password = '" + pword + "'";
-            statement.execute(queryStatement);
-            ResultSet rs = statement.getResultSet(); // getting results from the SQL query
+
+
+            ResultSet rs = DBQuery.login(uname, pword);
             
             while(rs.next()) {
                
-               queryResult = rs.getString("userName") + rs.getString("password"); //combines username and pass (testtest)
-               userId = rs.getInt("userId");
+               queryResult = rs.getString("User_Name") + rs.getString("Password"); //combines username and pass (testtest)
+               userId = rs.getInt("User_ID");
             
             }
             
@@ -161,9 +135,9 @@ public class LoginScreenController implements Initializable {
                 genLogFile(uname);
                 
                 // call to appointment check within 15 minutes
-                apptCheck(userId);
+                DBQuery.apptCheck(userId);
                 
-                MainScreenController.receiver(userId);
+                DBQuery.receiver(userId);
                 
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 

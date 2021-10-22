@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportsController">
     <children>
     <AnchorPane layoutX="0.800000011920929" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
          <children>
@@ -15,8 +15,7 @@
             <Hyperlink fx:id="HyperlinkNumActiveConsult" layoutX="31.0" layoutY="74.0" onAction="#onHyperlinkNumActiveConsult" text="Number of Active Consultants" />
          </children>
       </AnchorPane>
-      <Button fx:id="ButtonExit" layoutX="465.0" layoutY="330.0" mnemonicParsing="false" onAction="#onButtonExit" text="Exit" />
-      <Button fx:id="ButtonCancel" layoutX="388.0" layoutY="330.0" mnemonicParsing="false" onAction="#onButtonCancel" text="Cancel" />
+      <Button fx:id="ButtonCancel" layoutX="461.0" layoutY="333.0" mnemonicParsing="false" onAction="#onButtonCancel" text="Cancel" />
       <TableView layoutX="25.0" layoutY="107.0" prefHeight="200.0" prefWidth="557.0">
         <columns>
           <TableColumn editable="false" prefWidth="156.0" sortable="false" text="C1" />

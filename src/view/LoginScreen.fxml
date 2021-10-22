@@ -6,12 +6,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="278.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
+<AnchorPane id="AnchorPane" prefHeight="278.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginScreenController">
    <children>
       <TextField fx:id="unameTextbox" layoutX="26.0" layoutY="70.0" text="test" />
-      <PasswordField fx:id="pwordTextbox" layoutX="26.0" layoutY="142.0" text="test" />
-      <Button fx:id="LoginButton" layoutX="57.0" layoutY="205.0" mnemonicParsing="false" onAction="#onLogin" text="Login" />
+      <PasswordField fx:id="pwordTextbox" layoutX="26.0" layoutY="126.0" text="test" />
+      <Button fx:id="LoginButton" layoutX="78.0" layoutY="223.0" mnemonicParsing="false" onAction="#onLogin" text="Login" />
       <Label fx:id="LabelUsername" layoutX="26.0" layoutY="53.0" text="Username" />
-      <Label fx:id="LabelPassword" layoutX="26.0" layoutY="125.0" text="Password" />
+      <Label fx:id="LabelPassword" layoutX="26.0" layoutY="109.0" text="Password" />
+      <TextField fx:id="localeTextbox" editable="false" layoutX="26.0" layoutY="178.0" />
+      <Label fx:id="LabelLocale" layoutX="26.0" layoutY="161.0" text="Locale" />
    </children>
 </AnchorPane>

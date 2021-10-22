@@ -1,16 +1,13 @@
 package wgucms;
 
+import dao.DBConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import dao.DBConnection;
-import dao.DBQuery;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
+import java.sql.SQLException;
 
 
 public class WguCMS extends Application {
@@ -25,7 +22,9 @@ public class WguCMS extends Application {
 
     
     public static void main(String[] args) throws SQLException {
-    
+
+       
+        //Locale.setDefault(new Locale("fr")); // used to test French translation on login page
         launch(args);
         // anything past launch(args); only occurs after all windows to the app are closed
         
