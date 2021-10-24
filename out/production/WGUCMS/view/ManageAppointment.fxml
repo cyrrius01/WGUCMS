@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="301.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ManageAppointmentController">
+   <children>
+      <AnchorPane layoutX="1.0" layoutY="2.0" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="365.0" prefWidth="300.0">
+         <children>
+            <TextField fx:id="TextFieldTitle" layoutX="23.0" layoutY="61.0" prefHeight="25.0" prefWidth="222.0" promptText="Title" />
+            <TextField fx:id="TextFieldDescription" layoutX="23.0" layoutY="91.0" prefHeight="25.0" prefWidth="222.0" promptText="Description" />
+            <TextField fx:id="TextFieldLocation" layoutX="24.0" layoutY="121.0" prefHeight="25.0" prefWidth="222.0" promptText="Location" />
+            <ComboBox fx:id="ComboBoxContact" layoutX="24.0" layoutY="151.0" onAction="#onComboBoxContact" prefHeight="25.0" prefWidth="222.0" promptText="Contact" />
+            <ComboBox fx:id="ComboBoxAppointmentType" layoutX="24.0" layoutY="181.0" onAction="#onComboBoxAppointmentType" prefHeight="25.0" prefWidth="222.0" promptText="Appointment Type" />
+            <DatePicker fx:id="DatePickerStartDate" layoutX="23.0" layoutY="211.0" onAction="#onDatePickerStartDate" prefHeight="25.0" prefWidth="222.0" promptText="Start Date" />
+            <ComboBox fx:id="ComboBoxStartTime" layoutX="24.0" layoutY="243.0" onAction="#onComboBoxStartTime" prefHeight="25.0" prefWidth="222.0" promptText="Start Time" />
+            <DatePicker fx:id="DatePickerEndDate" editable="false" layoutX="24.0" layoutY="272.0" onAction="#onDatePickerEndDate" prefHeight="25.0" prefWidth="222.0" promptText="End Date" />
+            <ComboBox fx:id="ComboBoxEndTime" layoutX="25.0" layoutY="304.0" onAction="#onComboBoxEndTime" prefHeight="25.0" prefWidth="222.0" promptText="End Time" />
+            <TextField fx:id="TextFieldCustomerID" layoutX="23.0" layoutY="333.0" prefHeight="25.0" prefWidth="222.0" promptText="Customer_ID" />
+            <TextField fx:id="TextFieldUserID" layoutX="24.0" layoutY="364.0" prefHeight="25.0" prefWidth="222.0" promptText="User_ID" />
+            <TextField fx:id="TextFieldAppointmentID" editable="false" layoutX="23.0" layoutY="31.0" prefHeight="25.0" prefWidth="222.0" promptText="AppointmentID" />
+         </children>
+      </AnchorPane>
+      <Button fx:id="ButtonSave" layoutX="32.0" layoutY="403.0" mnemonicParsing="false" onAction="#onButtonSave" text="Save" />
+      <Button fx:id="ButtonCancel" layoutX="117.0" layoutY="403.0" mnemonicParsing="false" onAction="#onButtonCancel" text="Cancel" />
+      <Button fx:id="ButtonDelete" layoutX="204.0" layoutY="403.0" mnemonicParsing="false" onAction="#onButtonDelete" text="Delete" />
+   </children>
+</AnchorPane>
