@@ -123,7 +123,7 @@ public class CustomerController implements Initializable {
                 !TextFieldPhone.getText().equals(phone) || !ComboBoxState.getSelectionModel().getSelectedItem().equals(state) ||
                 !ComboBoxCountry.getSelectionModel().getSelectedItem().equals(country))
         {
-            System.out.println(TextFieldName.getText().equals(name));
+
             String newName = TextFieldName.getText();
             String newAddress = TextFieldStreetAddress.getText();
             String newPostal = TextFieldPostalCode.getText();
@@ -170,7 +170,13 @@ public class CustomerController implements Initializable {
 
         blank.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                DBQuery.deleteCustomer();
+                DBQuery.deleteCustomer(id);
+
+                Alert newAlert = new Alert(Alert.AlertType.INFORMATION);
+                newAlert.setHeaderText(null);
+                newAlert.setContentText("Customer deleted successfully.");
+                newAlert.showAndWait();
+
                 ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 
                 Parent root = null;

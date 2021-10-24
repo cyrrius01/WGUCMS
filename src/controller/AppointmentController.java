@@ -61,6 +61,8 @@ public class AppointmentController implements Initializable {
     @FXML
     private Button ButtonExit;
 
+
+
     public static ObservableList options = DBQuery.options;
 
     /**
@@ -74,125 +76,24 @@ public class AppointmentController implements Initializable {
 
         ComboBoxContact.getItems().addAll(DBQuery.contacts());
         ComboBoxContact.setItems(options);
+        LocalDateTime easternStart = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
+        ZonedDateTime easternZDT = easternStart.atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime localZDT = easternZDT.withZoneSameInstant(ZoneId.systemDefault());
+        LocalTime startLocal = localZDT.toLocalTime();
 
-        // operating hours are 8 am to 10 pm EST
-        ComboBoxStartTime.getItems().addAll(LocalTime.parse("08:00"),
-                LocalTime.parse("08:15"),
-                LocalTime.parse("08:30"),
-                LocalTime.parse("08:45"),
-                LocalTime.parse("09:00"),
-                LocalTime.parse("09:15"),
-                LocalTime.parse("09:30"),
-                LocalTime.parse("09:45"),
-                LocalTime.parse("10:00"),
-                LocalTime.parse("10:15"),
-                LocalTime.parse("10:30"),
-                LocalTime.parse("10:45"),
-                LocalTime.parse("11:00"),
-                LocalTime.parse("11:15"),
-                LocalTime.parse("11:30"),
-                LocalTime.parse("11:45"),
-                LocalTime.parse("12:00"),
-                LocalTime.parse("12:15"),
-                LocalTime.parse("12:30"),
-                LocalTime.parse("12:45"),
-                LocalTime.parse("13:00"),
-                LocalTime.parse("13:15"),
-                LocalTime.parse("13:30"),
-                LocalTime.parse("13:45"),
-                LocalTime.parse("14:00"),
-                LocalTime.parse("14:15"),
-                LocalTime.parse("14:30"),
-                LocalTime.parse("14:45"),
-                LocalTime.parse("15:00"),
-                LocalTime.parse("15:15"),
-                LocalTime.parse("15:30"),
-                LocalTime.parse("15:45"),
-                LocalTime.parse("16:00"),
-                LocalTime.parse("16:15"),
-                LocalTime.parse("16:30"),
-                LocalTime.parse("16:45"),
-                LocalTime.parse("17:00"),
-                LocalTime.parse("17:15"),
-                LocalTime.parse("17:30"),
-                LocalTime.parse("17:45"),
-                LocalTime.parse("18:00"),
-                LocalTime.parse("18:15"),
-                LocalTime.parse("18:30"),
-                LocalTime.parse("18:45"),
-                LocalTime.parse("19:00"),
-                LocalTime.parse("19:15"),
-                LocalTime.parse("19:30"),
-                LocalTime.parse("19:45"),
-                LocalTime.parse("20:00"),
-                LocalTime.parse("20:15"),
-                LocalTime.parse("20:30"),
-                LocalTime.parse("20:45"),
-                LocalTime.parse("21:00"),
-                LocalTime.parse("21:15"),
-                LocalTime.parse("21:30"),
-                LocalTime.parse("21:45"),
-                LocalTime.parse("22:00")
-        );
+        LocalDateTime easternEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));
+        ZonedDateTime easternZDTE = easternEnd.atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime localZDTE = easternZDTE.withZoneSameInstant(ZoneId.systemDefault());
+        LocalTime endLocal = localZDTE.toLocalTime();
 
-        ComboBoxEndTime.getItems().addAll(LocalTime.parse("08:00"),
-                LocalTime.parse("08:15"),
-                LocalTime.parse("08:30"),
-                LocalTime.parse("08:45"),
-                LocalTime.parse("09:00"),
-                LocalTime.parse("09:15"),
-                LocalTime.parse("09:30"),
-                LocalTime.parse("09:45"),
-                LocalTime.parse("10:00"),
-                LocalTime.parse("10:15"),
-                LocalTime.parse("10:30"),
-                LocalTime.parse("10:45"),
-                LocalTime.parse("11:00"),
-                LocalTime.parse("11:15"),
-                LocalTime.parse("11:30"),
-                LocalTime.parse("11:45"),
-                LocalTime.parse("12:00"),
-                LocalTime.parse("12:15"),
-                LocalTime.parse("12:30"),
-                LocalTime.parse("12:45"),
-                LocalTime.parse("13:00"),
-                LocalTime.parse("13:15"),
-                LocalTime.parse("13:30"),
-                LocalTime.parse("13:45"),
-                LocalTime.parse("14:00"),
-                LocalTime.parse("14:15"),
-                LocalTime.parse("14:30"),
-                LocalTime.parse("14:45"),
-                LocalTime.parse("15:00"),
-                LocalTime.parse("15:15"),
-                LocalTime.parse("15:30"),
-                LocalTime.parse("15:45"),
-                LocalTime.parse("16:00"),
-                LocalTime.parse("16:15"),
-                LocalTime.parse("16:30"),
-                LocalTime.parse("16:45"),
-                LocalTime.parse("17:00"),
-                LocalTime.parse("17:15"),
-                LocalTime.parse("17:30"),
-                LocalTime.parse("17:45"),
-                LocalTime.parse("18:00"),
-                LocalTime.parse("18:15"),
-                LocalTime.parse("18:30"),
-                LocalTime.parse("18:45"),
-                LocalTime.parse("19:00"),
-                LocalTime.parse("19:15"),
-                LocalTime.parse("19:30"),
-                LocalTime.parse("19:45"),
-                LocalTime.parse("20:00"),
-                LocalTime.parse("20:15"),
-                LocalTime.parse("20:30"),
-                LocalTime.parse("20:45"),
-                LocalTime.parse("21:00"),
-                LocalTime.parse("21:15"),
-                LocalTime.parse("21:30"),
-                LocalTime.parse("21:45"),
-                LocalTime.parse("22:00"));
-    }    
+        LocalTime lts = startLocal;
+        while (lts.isBefore(endLocal.plusSeconds(1))) {
+            ComboBoxStartTime.getItems().add(lts);
+            ComboBoxEndTime.getItems().add(lts);
+            lts = lts.plusMinutes(15);
+        }
+
+    }
 
     @FXML
     private void onComboBoxAppointmentType(ActionEvent event) {
@@ -243,12 +144,6 @@ public class AppointmentController implements Initializable {
     @FXML
     private void onButtonSave(ActionEvent event) throws IOException {
 
-        // local time, local date
-        // to localDateTime
-        // to ZonedDateTime
-        // to localDateTime
-        // to Timestamp
-        ZoneId zid = ZoneId.systemDefault();
         if(DatePickerStartDate.getValue() == null ||
         DatePickerEndDate.getValue() == null ) {
             Alert blank = new Alert(Alert.AlertType.ERROR);
@@ -272,19 +167,19 @@ public class AppointmentController implements Initializable {
         LocalDateTime ldt = LocalDateTime.of(ld, lt);
         LocalDateTime ldtend = LocalDateTime.of(ldend, ltend);
 
-        ZonedDateTime zdt = ldt.atZone(zid);
-        ZonedDateTime zdtend = ldtend.atZone(zid);
+        //ZonedDateTime zdt = ldt.atZone(zid);
+        //ZonedDateTime zdtend = ldtend.atZone(zid);
 
 
-        ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("GMT"));
-        ZonedDateTime utczdtend = zdtend.withZoneSameInstant(ZoneId.of("GMT"));
+        //ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("GMT"));
+        //ZonedDateTime utczdtend = zdtend.withZoneSameInstant(ZoneId.of("GMT"));
 
-        LocalDateTime cvtldt = utczdt.toLocalDateTime();
-        LocalDateTime cvtldtend = utczdtend.toLocalDateTime();
+        //LocalDateTime cvtldt = utczdt.toLocalDateTime();
+        //LocalDateTime cvtldtend = utczdtend.toLocalDateTime();
 
-        Timestamp start = Timestamp.valueOf(cvtldt);
+        Timestamp start = Timestamp.valueOf(ldt);
             System.out.println(start); //comes back as correct timestamp
-        Timestamp end = Timestamp.valueOf(cvtldtend);
+        Timestamp end = Timestamp.valueOf(ldtend);
 
         if (TextFieldTitle.getText().isEmpty() || TextFieldDescription.getText().isEmpty() || TextFieldLocation.getText().isEmpty() ||
                 ComboBoxAppointmentType.getSelectionModel().isEmpty() || TextFieldCustomerID.getText().isEmpty() || TextFieldUserID.getText().isEmpty() ||
@@ -368,4 +263,10 @@ lambda
 
     public void onComboBoxContact(ActionEvent actionEvent) {
     }
+
+
+
+
+
+
 }

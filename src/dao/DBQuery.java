@@ -1,5 +1,6 @@
 package dao;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import controller.CustomerController;
 import controller.NewCustomerController;
 import javafx.collections.FXCollections;
@@ -8,6 +9,7 @@ import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.sql.*;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -41,6 +43,8 @@ public class DBQuery {
                 "first_level_divisions.Country_ID = countries.Country_ID SET Customer_Name = '" + newName + "', Address = '" + newAddress + "', " +
                 "Postal_Code = '"+ newPostal + "', Phone = '" + newPhone + "', Division = '" + newState + "', Country = '" + newCountry + "'WHERE Customer_ID " +
                 "= " + id + ";";
+
+
         try {
             statement.execute(query);
         }
@@ -49,9 +53,31 @@ public class DBQuery {
         }
     }
 
-    public static void deleteCustomer() {
+    public static void deleteCustomer(int id) {
 
         // to do delete appointment first using customer_id then delete customer
+        try {
+            String query = "DELETE FROM appointments WHERE Customer_ID = '" + id + "';";
+            statement.execute(query);
+
+            String newQuery = "DELETE FROM customers WHERE Customer_ID = '" + id + "';";
+            statement.execute(newQuery);
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteAppt(int apptAppointment_id) {
+
+        try {
+
+            String query = "DELETE FROM appointments WHERE Appointment_ID = '" + apptAppointment_id + "';";
+            statement.execute(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -67,47 +93,53 @@ public class DBQuery {
     }
     public static String getAllAppointments(){
 
-        String apptQuery = "SELECT CAST(apt.Start AS DATE) AS 'Date', CAST(apt.Start AS TIME) AS 'Time', cs.Customer_Name"
-                + " FROM appointments apt JOIN customers cs JOIN users us ON apt.Customer_ID = cs.Customer_ID AND apt.User_ID = us.User_ID "
-                + "WHERE us.User_ID = " + searchId;
+        String apptQuery = "SELECT apt.Appointment_ID, apt.Title, apt.Description, apt.Location, ctc.Contact_Name, apt.Type, apt.Start, apt.End, " +
+                "apt.Customer_ID, apt.User_ID FROM appointments apt JOIN contacts ctc ON apt.Contact_ID=ctc.Contact_ID JOIN users us ON us.User_ID=apt.User_ID " +
+                "WHERE us.User_ID = " + searchId;
 
         return apptQuery;
     }
 
     public static String getMonthAppointments() {
 
-        String apptQuery = "SELECT CAST(apt.Start AS DATE) AS 'Date', CAST(apt.Start AS TIME) AS 'Time', cs.Customer_Name"
-                + " FROM appointments apt JOIN customers cs JOIN users us ON apt.Customer_ID = cs.Customer_ID AND apt.User_ID = us.User_ID "
-                + "WHERE us.User_ID = " + searchId + " AND apt.Start >= now() AND apt.Start <= LAST_DAY(now())";
+        String apptQuery = "SELECT apt.Appointment_ID, apt.Title, apt.Description, apt.Location, ctc.Contact_Name, apt.Type, apt.Start, apt.End, " +
+                "apt.Customer_ID, apt.User_ID FROM appointments apt JOIN contacts ctc ON apt.Contact_ID=ctc.Contact_ID JOIN users us ON us.User_ID=apt.User_ID " +
+                "WHERE us.User_ID = " + searchId + " AND apt.Start >= now() AND apt.Start <= LAST_DAY(now())";
         return apptQuery;
+
     }
 
     public static String getWeekAppointments() {
 
-        String apptQuery = "SELECT CAST(apt.Start AS DATE) AS 'Date', CAST(apt.Start AS TIME) AS 'Time', cs.Customer_Name"
-                + " FROM appointments apt JOIN customers cs JOIN users us ON apt.Customer_ID = cs.Customer_ID AND apt.User_ID = us.User_ID "
-                + "WHERE us.User_ID = " + searchId + " AND apt.Start >= now() AND apt.Start <= DATE(NOW() + INTERVAL(7-DAYOFWEEK(NOW())) DAY)";
+        String apptQuery = "SELECT apt.Appointment_ID, apt.Title, apt.Description, apt.Location, ctc.Contact_Name, apt.Type, apt.Start, apt.End, " +
+                "apt.Customer_ID, apt.User_ID FROM appointments apt JOIN contacts ctc ON apt.Contact_ID=ctc.Contact_ID JOIN users us ON us.User_ID=apt.User_ID " +
+                "WHERE us.User_ID = " + searchId + " AND apt.Start >= now() AND apt.Start <= DATE(NOW() + INTERVAL(7-DAYOFWEEK(NOW())) DAY)";
         return apptQuery;
 
     }
 
     public static void apptCheck(int userId) throws SQLException {
-        Statement apptStatement = DBQuery.getStatement();
-        String apptQuery = "Select apt.Start, cs.Customer_Name from appointments apt "
-                + "JOIN customers cs ON cs.Customer_ID = apt.Customer_ID WHERE "
-                + "User_ID = " + userId + " AND Start >= NOW() AND Start < NOW() + interval 16 minute";
-        apptStatement.execute(apptQuery);
-        ResultSet apptRs = apptStatement.getResultSet();
+        try {
+            Statement apptStatement = DBQuery.getStatement();
+            String apptQuery = "Select apt.Start, cs.Customer_Name from appointments apt "
+                    + "JOIN customers cs ON cs.Customer_ID = apt.Customer_ID WHERE "
+                    + "User_ID = " + userId + " AND Start >= NOW() AND Start < NOW() + interval 16 minute";
+            apptStatement.execute(apptQuery);
+            ResultSet apptRs = apptStatement.getResultSet();
 
-        while(apptRs.next()) {
-            Timestamp apptTime = apptRs.getTimestamp("Start");
+            while (apptRs.next()) {
+                Timestamp apptTime = apptRs.getTimestamp("Start");
 
-            ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
-            Alert apptCheck = new Alert(Alert.AlertType.INFORMATION);
-            apptCheck.setHeaderText(null);
-            apptCheck.setContentText(languageRB.getString("apptSoon"));
+                ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
+                Alert apptCheck = new Alert(Alert.AlertType.INFORMATION);
+                apptCheck.setHeaderText(null);
+                apptCheck.setContentText(languageRB.getString("apptSoon"));
 
-            apptCheck.showAndWait();
+                apptCheck.showAndWait();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -215,14 +247,66 @@ public class DBQuery {
     }
 
     public static void apptInsert(DAOAppointments apptObject) {
-
-        String query = "INSERT INTO appointments (Title, Description, Location, Type, Start, End, Customer_ID, User_ID, Contact_ID) VALUES ('"+apptObject.getTitle()+"', '"+apptObject.getDescription()+"', '"+ apptObject.getLocation()+"', '"+apptObject.getType()+"', '"+apptObject.getStart()+"', '"+apptObject.getEnd()+"', '"+apptObject.getCustomerId()+"', '"+apptObject.getUserId()+"', '"+apptObject.getContactId()+"')";
         try {
-            statement.execute(query);
+
+            String query = "INSERT INTO appointments VALUES (NULL, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, ?, ?, ?)";
+
+            PreparedStatement ps = DBConnection.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            ps.setString(1, apptObject.getTitle());
+            ps.setString(2, apptObject.getDescription());
+            ps.setString(3, apptObject.getLocation());
+            ps.setString(4, apptObject.getType());
+            ps.setTimestamp(5, apptObject.getStart());
+            ps.setTimestamp(6, apptObject.getEnd());
+            ps.setInt(7, apptObject.getCustomerId());
+            ps.setInt(8, apptObject.getUserId());
+            ps.setInt(9, apptObject.getContactId());
+
+            ps.execute();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            int apptId = rs.getInt(1);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static void updateAppointment(String newApptID,String newTitle,String newDescription,String newLocation,String newContact,String newType,
+                                         Timestamp start,Timestamp end,String newCustomerID,String newUserID) {
+            String contactID = "SELECT Contact_ID FROM contacts WHERE Contact_Name = '" + newContact + "';";
+
+            String query = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, " +
+                    "Contact_ID = ? WHERE Appointment_ID = ?";
+
+            try {
+                statement.execute(contactID);
+                ResultSet rs = statement.getResultSet();
+                rs.next();
+                int contactId = rs.getInt("Contact_ID");
+
+
+                PreparedStatement ps = DBConnection.getConnection().prepareStatement(query);
+                ps.setString(1, newTitle);
+                ps.setString(2, newDescription);
+                ps.setString(3, newLocation);
+                ps.setString(4, newType);
+                ps.setTimestamp(5, start);
+                ps.setTimestamp(6, end);
+                ps.setInt(7, Integer.parseInt(String.valueOf(newCustomerID)));
+                ps.setInt(8, Integer.parseInt(String.valueOf(newUserID)));
+                ps.setInt(9, contactId);
+                ps.setInt(10, Integer.parseInt(String.valueOf(newApptID)));
+
+                ps.execute();
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 
     public static int contactIDLookup(String contactNameField) {
@@ -246,9 +330,12 @@ public class DBQuery {
 
     public static String getAllCustomers(){
         options.clear();
+
         String apptQuery = "SELECT customers.Customer_ID, customers.Customer_Name, customers.Address, customers.Postal_Code, customers.Phone, first_level_divisions.Division, countries.Country FROM customers JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID";
 
         return apptQuery;
     }
+
+
 
 }

@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" maxHeight="394.0" maxWidth="600.0" minHeight="394.0" minWidth="600.0" prefHeight="394.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
+<AnchorPane id="AnchorPane" fx:id="" maxHeight="470.0" maxWidth="1113.0" minHeight="394.0" minWidth="600.0" prefHeight="470.0" prefWidth="1083.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainScreenController">
    <children>
     <AnchorPane layoutX="1.0" layoutY="6.0" minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="600.0">
          <children>
@@ -17,11 +17,18 @@
             <Separator layoutX="434.0" layoutY="249.0" orientation="VERTICAL" prefHeight="19.0" prefWidth="6.0" />
             <Separator layoutX="511.0" layoutY="249.0" orientation="VERTICAL" prefHeight="19.0" prefWidth="6.0" />
             <Button fx:id="NewAppointmentButton" layoutX="39.0" layoutY="318.0" mnemonicParsing="false" onAction="#onNewAppointmentClick" text="New Appointment" />
-            <TableView fx:id="MainScreenTableView" layoutX="-1.0" maxHeight="243.0" maxWidth="600.0" minHeight="243.0" minWidth="600.0" prefHeight="243.0" prefWidth="600.0">
+            <TableView fx:id="MainScreenTableView" layoutX="-1.0" maxHeight="243.0" maxWidth="1083.0" minHeight="243.0" minWidth="600.0" prefHeight="243.0" prefWidth="1083.0">
               <columns>
-                <TableColumn fx:id="DateTableColumn" prefWidth="115.1999785900116" text="Date" />
-                <TableColumn fx:id="TimeTableColumn" prefWidth="111.20001220703125" text="Time" />
-                  <TableColumn fx:id="CustomerTableColumn" minWidth="0.0" prefWidth="374.40001525878904" text="Customer" />
+                  <TableColumn fx:id="ApptIDTableColumn" minWidth="0.0" prefWidth="107.0" text="Appointment ID" />
+                <TableColumn fx:id="TitleTableColumn" prefWidth="56.0" text="Title" />
+                <TableColumn fx:id="DescriptionTableColumn" prefWidth="183.0" text="Description" />
+                  <TableColumn fx:id="LocationTableColumn" prefWidth="95.0" text="Location" />
+                  <TableColumn fx:id="ContactTableColumn" prefWidth="93.0" text="Contact" />
+                  <TableColumn fx:id="TypeTableColumn" prefWidth="151.0" text="Type" />
+                  <TableColumn fx:id="StartDateTimeTableColumn" prefWidth="121.0" text="Start Date &amp; Time" />
+                  <TableColumn fx:id="EndDateTimeTableColumn" prefWidth="129.0" text="End Date &amp; Time" />
+                  <TableColumn fx:id="CustomerIDTableColumn" prefWidth="83.0" text="Customer ID" />
+                  <TableColumn fx:id="UserIDTableColumn" prefWidth="82.0" text="User ID" />
               </columns>
             </TableView>
          </children>
@@ -29,5 +36,6 @@
       <Button fx:id="ExitButton" layoutX="506.0" layoutY="324.0" mnemonicParsing="false" onAction="#OnExitClick" text="Exit" />
       <Button fx:id="ReportsButton" layoutX="396.0" layoutY="324.0" mnemonicParsing="false" onAction="#OnReportsClick" text="Reports" />
       <Button fx:id="ManageCustomerButton" layoutX="217.0" layoutY="324.0" mnemonicParsing="false" onAction="#onManageCustomerClick" text="Manage Customer" />
+      <Button fx:id="ManageSelectedButton" layoutX="40.0" layoutY="269.0" mnemonicParsing="false" onAction="#onManageSelectedButton" text="Manage Selected Appt" />
    </children>
 </AnchorPane>
