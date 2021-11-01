@@ -9,7 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- *
+ * Used to create an Observable List of all countries
  * @author Keith A Graham
  */
 public class Country {

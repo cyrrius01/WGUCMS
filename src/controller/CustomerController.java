@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * FXML Controller class
+ * FXML Controller class controls the window for a selected customer
  *
  * @author Keith A Graham
  */
@@ -66,6 +66,10 @@ public class CustomerController implements Initializable {
     public static String countrySelected;
     public static String selected;
 
+    /**
+     * This football brings in the needed data to populate the customer form during the call to initialize.
+     * @param customer
+     */
     public static void football(Customer customer){
         Customer newCustomer = customer;
 
@@ -79,6 +83,12 @@ public class CustomerController implements Initializable {
 
     }
 
+    /**
+     * All fields are set to their respective values from the football values that were passed in above.
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         DBQuery.fillComboBox();
@@ -103,20 +113,14 @@ public class CustomerController implements Initializable {
         int stateIndex = stateOptions.indexOf(state);
         ComboBoxState.getSelectionModel().select(stateIndex);
 
-    }    
+    }
 
+    /**
+     * On save, any changes made are added to the customer object and then a query runs to update the respective database table(s).
+     * @param event
+     */
     @FXML
     private void onButtonSave(ActionEvent event) {
-
-        //look at variables and see if any changes exist, if so save to database, if not, make no changes
-        // variable list:
-            // id
-            // name
-            // address
-            // postal
-            // phone
-            // state
-            // country
 
 
         if(!TextFieldName.getText().equals(name) || !TextFieldStreetAddress.getText().equals(address) || !TextFieldPostalCode.getText().equals(postal) ||
@@ -148,6 +152,11 @@ public class CustomerController implements Initializable {
 
     }
 
+    /**
+     * On cancel, any changes made are tossed out and the form is closed returning the user to the Customer Search form.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonCancel(ActionEvent event) throws IOException {
         
@@ -163,6 +172,13 @@ public class CustomerController implements Initializable {
         
     }
 
+    /**
+     * On delete the user is prompted to confirm they wish to delete the customer. If Ok is pressed, a query runs to delete the customer from the
+     * respective database tables and the form closes on completion.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonDelete(ActionEvent event) throws IOException {
 
@@ -194,25 +210,10 @@ public class CustomerController implements Initializable {
             }
         });
 
-
-
-
-
-
-
-
     }
 
-    public void onComboClick(ActionEvent actionEvent) {
-    }
-
-    public void populateTextFields(Customer newCustomer) {
-
-    }
 
     public void onComboCountry(ActionEvent actionEvent) {
-
-
 
     }
 }

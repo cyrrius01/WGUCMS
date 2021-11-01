@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-/**
+/** This class is used to
  *
  * @author Keith A Graham
  */
@@ -21,7 +21,20 @@ public class DAOAppointments {
     private int userId;
     private int contactId;
     private String contact;
-    
+
+    /**
+     * Used to create an appointment object which is used in a query (Appointment Controller - onButtonSave)
+     *
+     * @param title
+     * @param description
+     * @param location
+     * @param type
+     * @param start
+     * @param end
+     * @param customerId
+     * @param userId
+     * @param contactId
+     */
     public DAOAppointments(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, int contactId){
 
         this.title = title;
@@ -34,27 +47,6 @@ public class DAOAppointments {
         this.userId = userId;
         this.contactId = contactId;
     }
-
-    public DAOAppointments(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, String contact){
-
-        this.title = title;
-        this.description = description;
-        this.location = location;
-        this.type = type;
-        this.start = start;
-        this.end = end;
-        this.customerId = customerId;
-        this.userId = userId;
-        this.contact = contact;
-    }
-    
-    
-    // need SQL insert to add appointment
-    // need SQL update to edit appointment
-    // need SQL delete to delete an appointment
-    // type of appointment and link to customer record
-    // view appointments by month and week, and all
-    // display appointment times in user's local time
 
     public int getAppointmentId() {
 

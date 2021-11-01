@@ -1,6 +1,7 @@
 package controller;
 
 import dao.DBQuery;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -70,9 +71,14 @@ public class MainScreenController implements Initializable {
     public ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
     public ObservableList<Appointment> monthAppointments = FXCollections.observableArrayList();
     private static int searchId;
-    
 
-    
+
+    /**
+     * On initialize, the form is cleared of any stale data and the query is created to pass to populateTV
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
                 
@@ -90,8 +96,13 @@ public class MainScreenController implements Initializable {
         String apptQuery = DBQuery.getAllAppointments();
 
         populateTV(apptQuery);
-    }    
+    }
 
+    /**
+     * when the month hyperlink is clicked, a query is passed to populateTV that will only get the appointments for the current month
+     *
+     * @param event
+     */
     @FXML
     private void OnMonthHyperlink(ActionEvent event) {
         
@@ -103,6 +114,11 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * When the Week hyperlink is clicked, a query request is sent to populate TV which will only show the weeks appointments
+     *
+     * @param event
+     */
     @FXML
     private void OnWeekHyperlink(ActionEvent event) {
         clearForm();
@@ -111,6 +127,11 @@ public class MainScreenController implements Initializable {
         populateTV(apptQuery);
     }
 
+    /**
+     * When the ALl hyperlink is clicked, a query string is sent to populate tv that will show all appointments
+     *
+     * @param event
+     */
     @FXML
     private void OnAllHyperlink(ActionEvent event) {
         clearForm();
@@ -120,6 +141,12 @@ public class MainScreenController implements Initializable {
         populateTV(apptQuery);
     }
 
+    /**
+     * When clicked, the New Appointment button will navigate the user to the New Appointment form where they can create a new appointment.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onNewAppointmentClick(ActionEvent event) throws IOException {
         clearForm();
@@ -129,6 +156,12 @@ public class MainScreenController implements Initializable {
         stageSetup(url);
     }
 
+    /**
+     * When manage customer is clicked, the user is taken to the Customer Search form which displays all current customers
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onManageCustomerClick(ActionEvent event) throws IOException {
         
@@ -140,6 +173,12 @@ public class MainScreenController implements Initializable {
         
     }
 
+    /**
+     * When the Reports button is clicked, the user is taken to a window showing three reports
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void OnReportsClick(ActionEvent event) throws IOException {
         clearForm();
@@ -150,6 +189,11 @@ public class MainScreenController implements Initializable {
         
     }
 
+    /**
+     * When exit is clicked, the application is closed down and database connection terminated.
+     *
+     * @param event
+     */
     @FXML
     private void OnExitClick(ActionEvent event) {
         
@@ -159,14 +203,24 @@ public class MainScreenController implements Initializable {
         System.exit(0);
    
     }
-    
+
+    /**
+     * This method clears the ObservableLists listed and also clears the table view
+     *
+     */
     private void clearForm(){
         allAppointments.clear();
         monthAppointments.clear();
         MainScreenTableView.getItems().clear();
         MainScreenTableView.refresh();
     }
-    
+
+    /**
+     * This method sets up the window
+     *
+     * @param url
+     * @throws IOException
+     */
     private void stageSetup(String url) throws IOException{
 
         Parent root = FXMLLoader.load(getClass().getResource(url));
@@ -177,8 +231,12 @@ public class MainScreenController implements Initializable {
         newStage.setScene(scene);
         newStage.show();
     }
-    
-    
+
+    /**
+     * This method receives the query string from one of the methods above and executes the query. Then it takes the results and populates the tableview.
+     *
+     * @param apptQuery
+     */
     private void populateTV(String apptQuery) {
         Appointment.clearAppointments();
         clearForm();
@@ -202,19 +260,8 @@ public class MainScreenController implements Initializable {
 
 
                 Timestamp ts = apptRs.getTimestamp("Start");
-                ///LocalDateTime ldt = ts.toLocalDateTime();
-                //ZonedDateTime zdt = ldt.atZone(ZoneId.of("UTC"));
-                //ZonedDateTime tzdt = zdt.withZoneSameInstant(ZoneId.of("America/New_York"));
-                //String startDateTime = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(tzdt);
-
-                //LocalDateTime sldt = tzdt.toLocalDateTime();
 
                 Timestamp tse = apptRs.getTimestamp("End");
-                //LocalDateTime ldte = tse.toLocalDateTime();
-                //ZonedDateTime zdte = ldte.atZone(ZoneId.of("UTC"));
-                //ZonedDateTime zdtet = zdte.withZoneSameInstant(ZoneId.of("America/New_York"));
-                //String endDateTime = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(zdtet);
-                //LocalDateTime ldtet = zdtet.toLocalDateTime();
 
                 int apptCustomer_ID = apptRs.getInt("Customer_ID");
                 int apptUser_ID = apptRs.getInt("User_ID");
@@ -240,13 +287,24 @@ public class MainScreenController implements Initializable {
         TitleTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptTitle"));
         DescriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptDescription"));
         LocationTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptLocation"));
-        TypeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptType"));
+// ******************************************************************************************************
+// lambda follows
+// ******************************************************************************************************
+        TypeTableColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getApptType()));
+        //TypeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptType"));
         StartDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptStart"));
         EndDateTimeTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptEnd"));
         CustomerIDTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptCustomer_ID"));
         UserIDTableColumn.setCellValueFactory(new PropertyValueFactory<>("apptUser_ID"));
     }
 
+    /**
+     * Manage Selected will check that the user actually selected an appointment from the tableview and if not, show an error message. IF so, they will navigate
+     * to the Manage APpointment screen
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onManageSelectedButton(ActionEvent event) throws IOException {
         Appointment appointment = MainScreenTableView.getSelectionModel().getSelectedItem();

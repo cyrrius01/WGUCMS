@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * DBConnection is used to create the necessary connection and connection string for all queries within the application. Uses MySQL 8.0.25 driver
+ */
 public class DBConnection {
     // JDBC URL parts
     private static final String protocol = "jdbc";
@@ -15,7 +18,12 @@ public class DBConnection {
     private static final String userName = "sqlUser"; // Username
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
-    
+
+    /**
+     * this method starts the database connection which remains open until the application is closed
+     *
+     * @return
+     */
     public static Connection startConnection() {
 
         try{
@@ -35,7 +43,10 @@ public class DBConnection {
         System.out.println(connection);
         return connection;
     }
-    
+
+    /**
+     * This method closes the database connection and is used on application exit.
+     */
     public static void closeConnection() {
         
         try{
@@ -48,6 +59,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * This method returns the connection to the database
+     *
+     * @return
+     */
     public static Connection getConnection() {
         return connection;
     }

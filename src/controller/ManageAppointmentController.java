@@ -21,6 +21,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
+/**
+ * This controller class allows a user to update or delete an appointment.
+ */
 public class ManageAppointmentController implements Initializable {
     @FXML
     private Hyperlink WeekHyperlink;
@@ -65,7 +68,11 @@ public class ManageAppointmentController implements Initializable {
     public static ObservableList options = FXCollections.observableArrayList();
     private static ObservableList<LocalTime> allTimes = FXCollections.observableArrayList();
 
-
+    /**
+     * This method takes a football passed from the Main Screen Controller and creates variables usable by the methods below
+     *
+     * @param appointment
+     */
     public static void football(Appointment appointment){
 
         apptAppointment_ID = appointment.getApptAppointment_ID();
@@ -81,7 +88,12 @@ public class ManageAppointmentController implements Initializable {
 
     }
 
-
+    /**
+     * On initialize, all data fields are set to their respective values, operating hours are set,
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
         DBQuery.contacts();
 
@@ -102,64 +114,22 @@ public class ManageAppointmentController implements Initializable {
         ComboBoxAppointmentType.getSelectionModel().select(apptTypeIndex);
 
         //break out timestamps to time and date
-        ComboBoxStartTime.getItems().addAll(LocalTime.parse("08:00"),
-                LocalTime.parse("08:15"),
-                LocalTime.parse("08:30"),
-                LocalTime.parse("08:45"),
-                LocalTime.parse("09:00"),
-                LocalTime.parse("09:15"),
-                LocalTime.parse("09:30"),
-                LocalTime.parse("09:45"),
-                LocalTime.parse("10:00"),
-                LocalTime.parse("10:15"),
-                LocalTime.parse("10:30"),
-                LocalTime.parse("10:45"),
-                LocalTime.parse("11:00"),
-                LocalTime.parse("11:15"),
-                LocalTime.parse("11:30"),
-                LocalTime.parse("11:45"),
-                LocalTime.parse("12:00"),
-                LocalTime.parse("12:15"),
-                LocalTime.parse("12:30"),
-                LocalTime.parse("12:45"),
-                LocalTime.parse("13:00"),
-                LocalTime.parse("13:15"),
-                LocalTime.parse("13:30"),
-                LocalTime.parse("13:45"),
-                LocalTime.parse("14:00"),
-                LocalTime.parse("14:15"),
-                LocalTime.parse("14:30"),
-                LocalTime.parse("14:45"),
-                LocalTime.parse("15:00"),
-                LocalTime.parse("15:15"),
-                LocalTime.parse("15:30"),
-                LocalTime.parse("15:45"),
-                LocalTime.parse("16:00"),
-                LocalTime.parse("16:15"),
-                LocalTime.parse("16:30"),
-                LocalTime.parse("16:45"),
-                LocalTime.parse("17:00"),
-                LocalTime.parse("17:15"),
-                LocalTime.parse("17:30"),
-                LocalTime.parse("17:45"),
-                LocalTime.parse("18:00"),
-                LocalTime.parse("18:15"),
-                LocalTime.parse("18:30"),
-                LocalTime.parse("18:45"),
-                LocalTime.parse("19:00"),
-                LocalTime.parse("19:15"),
-                LocalTime.parse("19:30"),
-                LocalTime.parse("19:45"),
-                LocalTime.parse("20:00"),
-                LocalTime.parse("20:15"),
-                LocalTime.parse("20:30"),
-                LocalTime.parse("20:45"),
-                LocalTime.parse("21:00"),
-                LocalTime.parse("21:15"),
-                LocalTime.parse("21:30"),
-                LocalTime.parse("21:45"),
-                LocalTime.parse("22:00")
-        );
+        LocalDateTime easternStart = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
+        ZonedDateTime easternZDT = easternStart.atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime localZDT = easternZDT.withZoneSameInstant(ZoneId.systemDefault());
+        LocalTime startLocal = localZDT.toLocalTime();
+
+        LocalDateTime easternEnd = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));
+        ZonedDateTime easternZDTE = easternEnd.atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime localZDTE = easternZDTE.withZoneSameInstant(ZoneId.systemDefault());
+        LocalTime endLocal = localZDTE.toLocalTime();
+
+        LocalTime lts = startLocal;
+        while (lts.isBefore(endLocal.plusSeconds(1))) {
+            ComboBoxStartTime.getItems().add(lts);
+            ComboBoxEndTime.getItems().add(lts);
+            lts = lts.plusMinutes(15);
+        }
         // breakdown timestamp to local time
         LocalDateTime ldt = apptStart;
         LocalTime loct = apptStart.toLocalTime();
@@ -172,63 +142,7 @@ public class ManageAppointmentController implements Initializable {
         DatePickerStartDate.setValue(ld);
 
 
-        ComboBoxEndTime.getItems().addAll(LocalTime.parse("08:00"),
-                LocalTime.parse("08:15"),
-                LocalTime.parse("08:30"),
-                LocalTime.parse("08:45"),
-                LocalTime.parse("09:00"),
-                LocalTime.parse("09:15"),
-                LocalTime.parse("09:30"),
-                LocalTime.parse("09:45"),
-                LocalTime.parse("10:00"),
-                LocalTime.parse("10:15"),
-                LocalTime.parse("10:30"),
-                LocalTime.parse("10:45"),
-                LocalTime.parse("11:00"),
-                LocalTime.parse("11:15"),
-                LocalTime.parse("11:30"),
-                LocalTime.parse("11:45"),
-                LocalTime.parse("12:00"),
-                LocalTime.parse("12:15"),
-                LocalTime.parse("12:30"),
-                LocalTime.parse("12:45"),
-                LocalTime.parse("13:00"),
-                LocalTime.parse("13:15"),
-                LocalTime.parse("13:30"),
-                LocalTime.parse("13:45"),
-                LocalTime.parse("14:00"),
-                LocalTime.parse("14:15"),
-                LocalTime.parse("14:30"),
-                LocalTime.parse("14:45"),
-                LocalTime.parse("15:00"),
-                LocalTime.parse("15:15"),
-                LocalTime.parse("15:30"),
-                LocalTime.parse("15:45"),
-                LocalTime.parse("16:00"),
-                LocalTime.parse("16:15"),
-                LocalTime.parse("16:30"),
-                LocalTime.parse("16:45"),
-                LocalTime.parse("17:00"),
-                LocalTime.parse("17:15"),
-                LocalTime.parse("17:30"),
-                LocalTime.parse("17:45"),
-                LocalTime.parse("18:00"),
-                LocalTime.parse("18:15"),
-                LocalTime.parse("18:30"),
-                LocalTime.parse("18:45"),
-                LocalTime.parse("19:00"),
-                LocalTime.parse("19:15"),
-                LocalTime.parse("19:30"),
-                LocalTime.parse("19:45"),
-                LocalTime.parse("20:00"),
-                LocalTime.parse("20:15"),
-                LocalTime.parse("20:30"),
-                LocalTime.parse("20:45"),
-                LocalTime.parse("21:00"),
-                LocalTime.parse("21:15"),
-                LocalTime.parse("21:30"),
-                LocalTime.parse("21:45"),
-                LocalTime.parse("22:00"));
+
 
         LocalDateTime enlt = apptEnd;
         LocalTime eloct = apptEnd.toLocalTime();
@@ -261,64 +175,104 @@ public class ManageAppointmentController implements Initializable {
     public void onDatePickerEndDate(ActionEvent actionEvent) {
     }
 
+    /**
+     * This method checks to see that the end time is after the start time
+     *
+     * @param actionEvent
+     */
     public void onComboBoxEndTime(ActionEvent actionEvent) {
+
+        LocalTime s = (LocalTime) ComboBoxStartTime.getValue();
+        LocalTime e = (LocalTime) ComboBoxEndTime.getValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm");
+        String stext = s.format(formatter);
+        String etext = e.format(formatter);
+        LocalTime sParsedTime = LocalTime.parse(stext);
+        LocalTime eParsedTime = LocalTime.parse(etext);
+
+        if (sParsedTime.isAfter(eParsedTime)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "End time must be after start time.");
+            // the following lambda expression causes "alert" to display, looks for the OK button to be pressed,
+            // and upon being pressed will cause the items in the End Time combo box to show
+            alert.showAndWait()
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> ComboBoxEndTime.show());
+        }
     }
 
+    /**
+     * On save, the method checks for any altered values and if any changes are found, a new appointment object is created and saved to the database table
+     *
+     * @param actionEvent
+     */
     public void onButtonSave(ActionEvent actionEvent) {
 
-        if(!TextFieldTitle.getText().equals(apptTitle) || !TextFieldDescription.getText().equals(apptDescription) || !TextFieldLocation.getText().equals(apptLocation) ||
-                !ComboBoxContact.getSelectionModel().getSelectedItem().equals(apptContact_Name) || !ComboBoxAppointmentType.getSelectionModel().getSelectedItem().equals(apptType) ||
-                !DatePickerStartDate.getValue().equals(apptStart.toLocalDate()) ||
-                !ComboBoxStartTime.getSelectionModel().getSelectedItem().equals(apptStart.toLocalTime()) ||
-                !DatePickerEndDate.getValue().equals(apptEnd.toLocalDate()) ||
-                !ComboBoxEndTime.getSelectionModel().getSelectedItem().equals(apptEnd.toLocalTime()) ||
-                !TextFieldCustomerID.getText().equals(apptCustomer_ID) || !TextFieldUserID.getText().equals(apptUser_ID)) {
+        LocalTime s = (LocalTime) ComboBoxStartTime.getValue();
+        LocalTime e = (LocalTime) ComboBoxEndTime.getValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm");
+        String stext = s.format(formatter);
+        String etext = e.format(formatter);
+        LocalTime sParsedTime = LocalTime.parse(stext);
+        LocalTime eParsedTime = LocalTime.parse(etext);
 
-            String newTitle = TextFieldTitle.getText();
-            String newDescription = TextFieldDescription.getText();
-            String newLocation = TextFieldLocation.getText();
-            String newContact = (String) ComboBoxContact.getValue();
-            String newType = (String) ComboBoxAppointmentType.getValue();
-            LocalDate newSdate = DatePickerStartDate.getValue();
-            LocalTime newStime = (LocalTime) ComboBoxStartTime.getValue();
-            System.out.println(newStime + " is newStime");
-            LocalDate newEdate = DatePickerEndDate.getValue();
-            LocalTime newEtime = (LocalTime) ComboBoxEndTime.getValue();
-            String newCustomerID = TextFieldCustomerID.getText();
-            String newUserID = TextFieldUserID.getText();
-            String newApptID = TextFieldAppointmentID.getText();
-
-            LocalDateTime start = LocalDateTime.of(newSdate, newStime);
-            //ZonedDateTime startzdt = start.atZone(ZoneId.systemDefault());
-            //ZonedDateTime startTzdt = startzdt.withZoneSameInstant(ZoneId.of("UTC"));
-            //LocalDateTime startLdt = startTzdt.toLocalDateTime();
-            Timestamp startTime = Timestamp.valueOf(start);
-
-
-            LocalDateTime end = LocalDateTime.of(newEdate, newEtime);
-            //ZonedDateTime endzdt = end.atZone(ZoneId.systemDefault());
-            //ZonedDateTime endTzdt = endzdt.withZoneSameInstant(ZoneId.of("UTC"));
-            //LocalDateTime endLdt = endTzdt.toLocalDateTime();
-            Timestamp endTime = Timestamp.valueOf(end);
-
-
-
-            DBQuery.updateAppointment(newApptID, newTitle, newDescription, newLocation, newContact, newType, startTime, endTime, newCustomerID, newUserID);
-
-            Alert blank = new Alert(Alert.AlertType.INFORMATION);
-            blank.setHeaderText(null);
-            blank.setContentText("Changes saved.");
-            blank.showAndWait();
-
+        if (sParsedTime.isAfter(eParsedTime)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "End time must be after start time.");
+            // the following lambda expression causes "alert" to display, looks for the OK button to be pressed,
+            // and upon being pressed will cause the items in the End Time combo box to show
+            alert.showAndWait()
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> ComboBoxEndTime.show());
         } else {
-            Alert blank = new Alert(Alert.AlertType.INFORMATION);
-            blank.setHeaderText(null);
-            blank.setContentText("No changes to save.");
-            blank.showAndWait();
-        }
 
+            if (!TextFieldTitle.getText().equals(apptTitle) || !TextFieldDescription.getText().equals(apptDescription) || !TextFieldLocation.getText().equals(apptLocation) ||
+                    !ComboBoxContact.getSelectionModel().getSelectedItem().equals(apptContact_Name) || !ComboBoxAppointmentType.getSelectionModel().getSelectedItem().equals(apptType) ||
+                    !DatePickerStartDate.getValue().equals(apptStart.toLocalDate()) ||
+                    !ComboBoxStartTime.getSelectionModel().getSelectedItem().equals(apptStart.toLocalTime()) ||
+                    !DatePickerEndDate.getValue().equals(apptEnd.toLocalDate()) ||
+                    !ComboBoxEndTime.getSelectionModel().getSelectedItem().equals(apptEnd.toLocalTime()) ||
+                    !TextFieldCustomerID.getText().equals(apptCustomer_ID) || !TextFieldUserID.getText().equals(apptUser_ID)) {
+
+                String newTitle = TextFieldTitle.getText();
+                String newDescription = TextFieldDescription.getText();
+                String newLocation = TextFieldLocation.getText();
+                String newContact = (String) ComboBoxContact.getValue();
+                String newType = (String) ComboBoxAppointmentType.getValue();
+                LocalDate newSdate = DatePickerStartDate.getValue();
+                LocalTime newStime = (LocalTime) ComboBoxStartTime.getValue();
+                LocalDate newEdate = DatePickerEndDate.getValue();
+                LocalTime newEtime = (LocalTime) ComboBoxEndTime.getValue();
+                String newCustomerID = TextFieldCustomerID.getText();
+                String newUserID = TextFieldUserID.getText();
+                String newApptID = TextFieldAppointmentID.getText();
+
+                LocalDateTime start = LocalDateTime.of(newSdate, newStime);
+                Timestamp startTime = Timestamp.valueOf(start);
+                LocalDateTime end = LocalDateTime.of(newEdate, newEtime);
+                Timestamp endTime = Timestamp.valueOf(end);
+
+
+                DBQuery.updateAppointment(newApptID, newTitle, newDescription, newLocation, newContact, newType, startTime, endTime, newCustomerID, newUserID);
+
+                Alert blank = new Alert(Alert.AlertType.INFORMATION);
+                blank.setHeaderText(null);
+                blank.setContentText("Changes saved.");
+                blank.showAndWait();
+
+            } else {
+                Alert blank = new Alert(Alert.AlertType.INFORMATION);
+                blank.setHeaderText(null);
+                blank.setContentText("No changes to save.");
+                blank.showAndWait();
+            }
+        }
     }
 
+    /**
+     * On cancel, any changes made are ignored and the window closed returning the user to the main screen
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonCancel(ActionEvent event) throws IOException {
 
@@ -334,6 +288,12 @@ public class ManageAppointmentController implements Initializable {
 
     }
 
+    /**
+     * ON delete, the user is asked to confirm deleting the appointment. If they confirm, an alert with the appointment ID and appointment type is shown on deletion
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void onButtonDelete(ActionEvent actionEvent) throws IOException{
 
         Alert blank = new Alert(Alert.AlertType.CONFIRMATION, "Press OK to delete the appointment.");
@@ -363,10 +323,6 @@ public class ManageAppointmentController implements Initializable {
                 newStage.show();
             }
         });
-
-
-
     }
-
 
 }

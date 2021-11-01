@@ -31,8 +31,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 
-
-
+/**
+ * This controls the login form a user first sees on execution of the program
+ */
 public class LoginScreenController implements Initializable {
     
     @FXML
@@ -54,9 +55,14 @@ public class LoginScreenController implements Initializable {
     private String queryResult;
     private int flag;
     private int userId;
-    
-    
-    
+
+
+    /**
+     * Initial sets all labels and buttons to be translatable using the resource bundle indicated
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
@@ -70,7 +76,13 @@ public class LoginScreenController implements Initializable {
 
         LoginButton.setText(languageRB.getString("Login"));
     }
-    
+
+    /**
+     * This will create a log file if none exists logging user access and time. If the file exists, the file is updated with the same.
+     *
+     * @param uname
+     * @throws IOException
+     */
     public void genLogFile(String uname) throws IOException{
         String logText = uname + " login at " + LocalDateTime.now();
                 File myFile = new File("logfile.txt");
@@ -83,10 +95,16 @@ public class LoginScreenController implements Initializable {
                 Files.write(path, Arrays.asList(logText), StandardCharsets.UTF_8, 
                         Files.exists(path) ? StandardOpenOption.APPEND : StandardOpenOption.CREATE);
     }
-    
 
-    
-    
+
+    /**
+     * On login, the username and password are checked for validity and if not the appropriate error message displays in either english or french depending on locale
+     * settings. A query runs to determine if the username and password exists in the database table and if so, the user is directed to the main screen.
+     *
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
     public void onLogin(ActionEvent event) throws SQLException, IOException {
         
          // check user locale since user has launched application

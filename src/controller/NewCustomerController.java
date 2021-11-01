@@ -19,6 +19,9 @@ import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
 
+/**
+ * This controller class allows a user to create a new customer in the system
+ */
 public class NewCustomerController implements Initializable {
 
     public static String sendState;
@@ -49,19 +52,26 @@ public class NewCustomerController implements Initializable {
     public static String countrySelected;
     public static String selected;
 
+    /**
+     * On initialize, the country combo box is populated
+     *
+     * @param url
+     * @param rb
+     */
     public void initialize(URL url, ResourceBundle rb) {
 
         DBQuery.fillComboBox();
 
         ComboBoxCountry.setItems(options);
 
-        // step 2 populate state dropdown based on country selection
-        // case when country = us, etc
-
-
-        // step 3 onSave create customer record in customers table, ensuring autocreation of ID
     }
 
+    /**
+     * This method takes the selected country from the combo box and sets the value to selected then fills the state combo box with the appropriate
+     * 1st level divisions (states or provinces)
+     *
+     * @param event
+     */
     @FXML
     private void onComboClick(ActionEvent event) {
 
@@ -77,9 +87,15 @@ public class NewCustomerController implements Initializable {
     @FXML
     public void onStateComboClick(ActionEvent event) {
 
-
     }
 
+    /**
+     * On save, the fields are checked to make sure none are empty, if one or more is empty an error will pop up. Otherwise, a new customer object is created
+     * and inserted into the appropriate database table
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonSave(ActionEvent event) throws IOException {
 
@@ -121,7 +137,12 @@ public class NewCustomerController implements Initializable {
 
     }
 
-
+    /**
+     * ON cancel the current window closes and returns the user to the main screen
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonCancel(ActionEvent event) throws IOException {
 

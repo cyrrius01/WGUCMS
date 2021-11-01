@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -23,7 +24,10 @@ import java.util.ResourceBundle;
  * FXML Controller class
  *
  * @author Keith A Graham
+ * Controls the New Appointment screen and all functionality therein.
+ *
  */
+
 public class AppointmentController implements Initializable {
 
     @FXML
@@ -65,8 +69,10 @@ public class AppointmentController implements Initializable {
 
     public static ObservableList options = DBQuery.options;
 
+
     /**
-     * Initializes the controller class.
+     * Initializes the controller class and sets the initial options in comboboxes.
+     *
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -75,7 +81,6 @@ public class AppointmentController implements Initializable {
         ComboBoxAppointmentType.getItems().addAll("Scrum", "Presentation", "Planning Session", "De-Briefing");
 
         ComboBoxContact.getItems().addAll(DBQuery.contacts());
-        ComboBoxContact.setItems(options);
         LocalDateTime easternStart = LocalDateTime.of(LocalDate.now(), LocalTime.of(8,0));
         ZonedDateTime easternZDT = easternStart.atZone(ZoneId.of("America/New_York"));
         ZonedDateTime localZDT = easternZDT.withZoneSameInstant(ZoneId.systemDefault());
@@ -97,27 +102,35 @@ public class AppointmentController implements Initializable {
 
     @FXML
     private void onComboBoxAppointmentType(ActionEvent event) {
-        
-        
-        
+
     }
 
+    /**
+     * When the date picker is selected, the local variable setEndDate is set from the value chosen.
+     * @param event
+     */
     @FXML
     private void onDatePickerStartDate(ActionEvent event) {
         LocalDate setEndDate = DatePickerStartDate.getValue();
         DatePickerEndDate.setValue(setEndDate);
     }
 
+    /**
+     * The End Date date picker is set to the value set in the Start Date date picker.
+     * @param event
+     */
     @FXML
     private void onDatePickerEndDate(ActionEvent event) {
         onDatePickerStartDate(event);
     }
 
+    /**
+     * The End Time combo box value is captured and alerts pop if the end time is earlier than the start time. Also in use
+     * is a lambda expression to display the alert in the event this error occurs.
+     * @param event
+     */
     @FXML
     private void onComboBoxEndTime(ActionEvent event) {
-
-
-
 
         LocalTime s = (LocalTime) ComboBoxStartTime.getValue();
         LocalTime e = (LocalTime) ComboBoxEndTime.getValue();
@@ -141,91 +154,138 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * When the save button is pressed, all of the entered values are checked for correctness. A query runs to determine there are no other
+     * meetings scheduled for the customer during the selected timeframe and alerts if one is found. Then, if none found, a database update
+     * occurs using the information collected in the form.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonSave(ActionEvent event) throws IOException {
 
-        if(DatePickerStartDate.getValue() == null ||
-        DatePickerEndDate.getValue() == null ) {
-            Alert blank = new Alert(Alert.AlertType.ERROR);
-            blank.setHeaderText(null);
-            blank.setContentText("Select a date.");
-            blank.showAndWait();
-        }
+        LocalTime s = (LocalTime) ComboBoxStartTime.getValue();
+        LocalTime e = (LocalTime) ComboBoxEndTime.getValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("kk:mm");
+        String stext = s.format(formatter);
+        String etext = e.format(formatter);
+        LocalTime sParsedTime = LocalTime.parse(stext);
+        LocalTime eParsedTime = LocalTime.parse(etext);
 
-        if (ComboBoxStartTime.getSelectionModel().isEmpty() || ComboBoxEndTime.getSelectionModel().isEmpty()) {
-            Alert blank = new Alert(Alert.AlertType.ERROR);
-            blank.setHeaderText(null);
-            blank.setContentText("Select a time.");
-            blank.showAndWait();
-        } else {
-        LocalTime lt = (LocalTime) ComboBoxStartTime.getValue();
-        LocalTime ltend = (LocalTime) ComboBoxEndTime.getValue();
-
-        LocalDate ld = DatePickerStartDate.getValue();
-        LocalDate ldend = DatePickerEndDate.getValue();
-
-        LocalDateTime ldt = LocalDateTime.of(ld, lt);
-        LocalDateTime ldtend = LocalDateTime.of(ldend, ltend);
-
-        //ZonedDateTime zdt = ldt.atZone(zid);
-        //ZonedDateTime zdtend = ldtend.atZone(zid);
-
-
-        //ZonedDateTime utczdt = zdt.withZoneSameInstant(ZoneId.of("GMT"));
-        //ZonedDateTime utczdtend = zdtend.withZoneSameInstant(ZoneId.of("GMT"));
-
-        //LocalDateTime cvtldt = utczdt.toLocalDateTime();
-        //LocalDateTime cvtldtend = utczdtend.toLocalDateTime();
-
-        Timestamp start = Timestamp.valueOf(ldt);
-            System.out.println(start); //comes back as correct timestamp
-        Timestamp end = Timestamp.valueOf(ldtend);
-
-        if (TextFieldTitle.getText().isEmpty() || TextFieldDescription.getText().isEmpty() || TextFieldLocation.getText().isEmpty() ||
-                ComboBoxAppointmentType.getSelectionModel().isEmpty() || TextFieldCustomerID.getText().isEmpty() || TextFieldUserID.getText().isEmpty() ||
-                ComboBoxContact.getSelectionModel().isEmpty()) {
-            Alert blank = new Alert(Alert.AlertType.ERROR);
-            blank.setHeaderText(null);
-            blank.setContentText("You must complete all fields!");
-            blank.showAndWait();
-        } else {
-
-        String titleField = TextFieldTitle.getText();
-        String descriptionField = TextFieldDescription.getText();
-        String locationField = TextFieldLocation.getText();
-        String typeField = ComboBoxAppointmentType.getValue().toString();
-        int customerIDField = Integer.valueOf(TextFieldCustomerID.getText());
-        int userIDField = Integer.valueOf(TextFieldUserID.getText());
-        String contactNameField = ComboBoxContact.getValue().toString();
-        int contactId = (int) DBQuery.contactIDLookup(contactNameField);
-
-
-            // create object
-
-            DAOAppointments apptObject = new DAOAppointments(titleField, descriptionField, locationField, typeField.toString(), start, end,
-                    customerIDField, userIDField, contactId);
-
-            DBQuery.apptInsert(apptObject);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment created successfully.");
-/* *********************************************************************************************************************************
-lambda
- ***********************************************************************************************************************************/
+        if (sParsedTime.isAfter(eParsedTime)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "End time must be after start time.");
+            // the following lambda expression causes "alert" to display, looks for the OK button to be pressed,
+            // and upon being pressed will cause the items in the End Time combo box to show
             alert.showAndWait()
                     .filter(response -> response == ButtonType.OK)
-                    .ifPresent(response -> ((Stage) (((Button) event.getSource()).getScene().getWindow())).close());
+                    .ifPresent(response -> ComboBoxEndTime.show());
+        } else {
 
-            Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+            if (DatePickerStartDate.getValue() == null ||
+                    DatePickerEndDate.getValue() == null) {
+                Alert blank = new Alert(Alert.AlertType.ERROR);
+                blank.setHeaderText(null);
+                blank.setContentText("Select a date.");
+                blank.showAndWait();
+            }
 
-            Stage newStage = new Stage();
-            newStage.setTitle(null);
-            Scene scene = new Scene(root);
-            newStage.setScene(scene);
-            newStage.show();
-        }
+            if (ComboBoxStartTime.getSelectionModel().isEmpty() || ComboBoxEndTime.getSelectionModel().isEmpty()) {
+                Alert blank = new Alert(Alert.AlertType.ERROR);
+                blank.setHeaderText(null);
+                blank.setContentText("Select a time.");
+                blank.showAndWait();
+            } else {
+                LocalTime lt = (LocalTime) ComboBoxStartTime.getValue();
+                LocalTime ltend = (LocalTime) ComboBoxEndTime.getValue();
+
+                LocalDate ld = DatePickerStartDate.getValue();
+                LocalDate ldend = DatePickerEndDate.getValue();
+
+                LocalDateTime ldt = LocalDateTime.of(ld, lt);
+                LocalDateTime ldtend = LocalDateTime.of(ldend, ltend);
+
+                Timestamp start = Timestamp.valueOf(ldt);
+                Timestamp end = Timestamp.valueOf(ldtend);
+
+
+
+                if (TextFieldTitle.getText().isEmpty() || TextFieldDescription.getText().isEmpty() || TextFieldLocation.getText().isEmpty() ||
+                        ComboBoxAppointmentType.getSelectionModel().isEmpty() || TextFieldCustomerID.getText().isEmpty() || TextFieldUserID.getText().isEmpty() ||
+                        ComboBoxContact.getSelectionModel().isEmpty()) {
+                    Alert blank = new Alert(Alert.AlertType.ERROR);
+                    blank.setHeaderText(null);
+                    blank.setContentText("You must complete all fields!");
+                    blank.showAndWait();
+                } else {
+
+                    String titleField = TextFieldTitle.getText();
+                    String descriptionField = TextFieldDescription.getText();
+                    String locationField = TextFieldLocation.getText();
+                    String typeField = ComboBoxAppointmentType.getValue().toString();
+                    int customerIDField = Integer.valueOf(TextFieldCustomerID.getText());
+                    int userIDField = Integer.valueOf(TextFieldUserID.getText());
+                    String contactNameField = ComboBoxContact.getValue().toString();
+                    int contactId = (int) DBQuery.contactIDLookup(contactNameField);
+
+                    LocalDateTime startA = start.toLocalDateTime();
+                    ZonedDateTime startB = startA.atZone(ZoneId.systemDefault());
+                    ZonedDateTime startC = startB.withZoneSameInstant(ZoneId.of("UTC"));
+                    LocalDateTime startD = startC.toLocalDateTime();
+                    Timestamp startE = Timestamp.valueOf(startD);
+
+                    LocalDateTime endA = end.toLocalDateTime();
+                    ZonedDateTime endB = endA.atZone(ZoneId.systemDefault());
+                    ZonedDateTime endC = endB.withZoneSameInstant(ZoneId.of("UTC"));
+                    LocalDateTime endD = endC.toLocalDateTime();
+                    Timestamp endE = Timestamp.valueOf(endD);
+
+                    System.out.println(startE + " " + endE);
+                    boolean result = DBQuery.existingApptSearch(customerIDField, startE, endE);
+
+
+
+                    if(!result) {
+
+                        // create object
+
+                        DAOAppointments apptObject = new DAOAppointments(titleField, descriptionField, locationField, typeField, start, end,
+                                customerIDField, userIDField, contactId);
+
+                        DBQuery.apptInsert(apptObject);
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment created successfully.");
+/* *********************************************************************************************************************************
+lambda Alert
+ ***********************************************************************************************************************************/
+                        alert.showAndWait()
+                                .filter(response -> response == ButtonType.OK)
+                                .ifPresent(response -> ((Stage) (((Button) event.getSource()).getScene().getWindow())).close());
+
+                        Parent root = FXMLLoader.load(getClass().getResource("/view/MainScreen.fxml"));
+
+                        Stage newStage = new Stage();
+                        newStage.setTitle(null);
+                        Scene scene = new Scene(root);
+                        newStage.setScene(scene);
+                        newStage.show();
+                    } else {
+                            Alert blank = new Alert(Alert.AlertType.ERROR);
+                            blank.setHeaderText(null);
+                            blank.setContentText("This customer already has a meeting during that timeframe! Choose different times.");
+                            blank.showAndWait();
+                        }
+                }
+            }
         }
     }
 
+    /**
+     * If the cancel button is pressed, the form is closed and the user is returned to the main menu.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonCancel(ActionEvent event) throws IOException {
         
@@ -241,32 +301,13 @@ lambda
         
     }
 
-    @FXML
-    private void onButtonExit(ActionEvent event) {
-        
-        ((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-
-        
-        System.out.println("Main Exit Clicked");
-        System.exit(0);
-        
-    }
-
-
-
     public void onComboBoxStartTime(ActionEvent actionEvent) {
     }
 
 
-    public void onComboBoxTime(ActionEvent actionEvent) {
-    }
-
     public void onComboBoxContact(ActionEvent actionEvent) {
+
     }
-
-
-
-
 
 
 }

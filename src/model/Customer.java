@@ -8,6 +8,8 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+
+
 public class Customer {
     private int Customer_ID;
     private String Customer_Name;
@@ -19,6 +21,16 @@ public class Customer {
 
     private static ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
 
+    /**
+     * Creates a customer object
+     * @param Customer_ID       Customer ID
+     * @param Customer_Name     Customer Name
+     * @param Address           Customer Address
+     * @param Postal_Code       Customer Postal Code
+     * @param Phone             Customer PHone Number
+     * @param Division          Customer State or Province
+     * @param Country           Customer Country
+     */
     public Customer(int Customer_ID, String Customer_Name, String Address, String Postal_Code, String Phone, String Division, String Country) {
         this.Customer_ID = Customer_ID;
         this.Customer_Name = Customer_Name;

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
- *
+ *The appointment class is used to create and update appointments.
  * @author Keith A Graham
  */
 public class Appointment {
@@ -26,7 +26,20 @@ public class Appointment {
     private static ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
 
     public static ObservableList<LocalTime> allTimes = FXCollections.observableArrayList();
-    
+
+    /**
+     * Creates an appointment object
+     * @param apptAppointment_ID    Appointment ID
+     * @param apptTitle             Appointment Title
+     * @param apptDescription       Appointment Description
+     * @param apptLocation          Appointment Location
+     * @param apptContact_Name      Contact Name
+     * @param apptType              Appointment Type
+     * @param apptStart             Appointment Start Date and Time
+     * @param apptEnd               Appointment End Date and Time
+     * @param apptCustomer_ID       Customer ID
+     * @param apptUser_ID           User ID
+     */
     public Appointment(int apptAppointment_ID, String apptTitle, String apptDescription, String apptLocation, String apptContact_Name, String apptType,
                        LocalDateTime apptStart, LocalDateTime apptEnd, int apptCustomer_ID, int apptUser_ID) {
 
@@ -41,7 +54,26 @@ public class Appointment {
         this.apptCustomer_ID = apptCustomer_ID;
         this.apptUser_ID = apptUser_ID;
     }
-    
+
+    /**
+     * Creates an appointment object
+     * @param apptAppointment_ID    Appointment ID
+     * @param apptTitle             Appointment Title
+     * @param apptType              Appointment Type
+     * @param apptDescription       Appointment Description
+     * @param apptStart             Appointment Start Date and Time
+     * @param apptEnd               Appointment End Date and Time
+     * @param apptCustomer_ID       Customer ID
+     */
+    public Appointment(int apptAppointment_ID, String apptTitle, String apptType, String apptDescription, LocalDateTime apptStart, LocalDateTime apptEnd, int apptCustomer_ID) {
+        this.apptAppointment_ID = apptAppointment_ID;
+        this.apptTitle = apptTitle;
+        this.apptType = apptType;
+        this.apptDescription = apptDescription;
+        this.apptStart = apptStart;
+        this.apptEnd = apptEnd;
+        this.apptCustomer_ID = apptCustomer_ID;
+    }
 
     public void setApptAppointment_ID(int apptAppointment_ID) {
         this.apptAppointment_ID = apptAppointment_ID;
@@ -135,69 +167,6 @@ public class Appointment {
     }
 
 
-    public static ObservableList<LocalTime> getTime() {
-        return allTimes;
-    }
-    public static void setTime(LocalTime time) {
-        allTimes.addAll(LocalTime.parse("08:00"),
-                LocalTime.parse("08:15"),
-                LocalTime.parse("08:30"),
-                LocalTime.parse("08:45"),
-                LocalTime.parse("09:00"),
-                LocalTime.parse("09:15"),
-                LocalTime.parse("09:30"),
-                LocalTime.parse("09:45"),
-                LocalTime.parse("10:00"),
-                LocalTime.parse("10:15"),
-                LocalTime.parse("10:30"),
-                LocalTime.parse("10:45"),
-                LocalTime.parse("11:00"),
-                LocalTime.parse("11:15"),
-                LocalTime.parse("11:30"),
-                LocalTime.parse("11:45"),
-                LocalTime.parse("12:00"),
-                LocalTime.parse("12:15"),
-                LocalTime.parse("12:30"),
-                LocalTime.parse("12:45"),
-                LocalTime.parse("13:00"),
-                LocalTime.parse("13:15"),
-                LocalTime.parse("13:30"),
-                LocalTime.parse("13:45"),
-                LocalTime.parse("14:00"),
-                LocalTime.parse("14:15"),
-                LocalTime.parse("14:30"),
-                LocalTime.parse("14:45"),
-                LocalTime.parse("15:00"),
-                LocalTime.parse("15:15"),
-                LocalTime.parse("15:30"),
-                LocalTime.parse("15:45"),
-                LocalTime.parse("16:00"),
-                LocalTime.parse("16:15"),
-                LocalTime.parse("16:30"),
-                LocalTime.parse("16:45"),
-                LocalTime.parse("17:00"),
-                LocalTime.parse("17:15"),
-                LocalTime.parse("17:30"),
-                LocalTime.parse("17:45"),
-                LocalTime.parse("18:00"),
-                LocalTime.parse("18:15"),
-                LocalTime.parse("18:30"),
-                LocalTime.parse("18:45"),
-                LocalTime.parse("19:00"),
-                LocalTime.parse("19:15"),
-                LocalTime.parse("19:30"),
-                LocalTime.parse("19:45"),
-                LocalTime.parse("20:00"),
-                LocalTime.parse("20:15"),
-                LocalTime.parse("20:30"),
-                LocalTime.parse("20:45"),
-                LocalTime.parse("21:00"),
-                LocalTime.parse("21:15"),
-                LocalTime.parse("21:30"),
-                LocalTime.parse("21:45"),
-                LocalTime.parse("22:00")
-        );
-    }
     
     public static void addAppointment(Appointment newAppointment) {
         allAppointments.add(newAppointment);        

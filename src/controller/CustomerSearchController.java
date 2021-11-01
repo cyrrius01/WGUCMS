@@ -26,7 +26,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * FXML Controller class
+ * FXML Controller class displays all current customers and allows the user to select one to manage, or click a button to create a new customer. If no
+ * user is selected when the select button is pressed, an error message displays to the user.
  *
  * @author Keith A Graham
  */
@@ -60,6 +61,12 @@ public class CustomerSearchController implements Initializable {
 
     public ObservableList<Appointment> allCustomers = FXCollections.observableArrayList();
 
+    /**
+     * During initialize, the button text is set and the query string created to pass to PopulateTV which populates the tableview.
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ResourceBundle languageRB = ResourceBundle.getBundle("wgucms/RB", Locale.getDefault());
@@ -73,10 +80,16 @@ public class CustomerSearchController implements Initializable {
         populateTV(apptQuery);
 
 
-    }    
+    }
 
 
-
+    /**
+     * When the select button is clicked, the selection is saved to a customer object. IF that object is empty, an error message is posted to the user.
+     * Otherwise, the customer object is passed to the CustomerController and the current window closed while the CustomerController opens
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonSelect(ActionEvent event) throws IOException {
 
@@ -104,6 +117,12 @@ public class CustomerSearchController implements Initializable {
         
     }
 
+    /**
+     * The cancel button closes out the Customer Search controller and returns the user to the main window
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonCancel(ActionEvent event) throws IOException {
         
@@ -120,7 +139,12 @@ public class CustomerSearchController implements Initializable {
     }
 
 
-
+    /**
+     * Clicking New will allow the user to navigate to the New Customer window where they can create a new customer.
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onButtonNew(ActionEvent event) throws IOException {
         
@@ -136,6 +160,12 @@ public class CustomerSearchController implements Initializable {
         
         
     }
+
+    /**
+     * This populates the tableview of the Customer Search Controller window.
+     *
+     * @param apptQuery
+     */
     private void populateTV(String apptQuery) {
         Customer.getAllCustomers().clear();
         Statement apptStatement = DBQuery.getStatement();
